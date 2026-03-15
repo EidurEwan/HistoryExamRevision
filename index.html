@@ -723,7 +723,7 @@ function createStatsStore(){
       return Math.round((acc*.45+cov*.25+(.5+.5*(rA-oA))*.15+Math.min(1,data.attempts.length/30)*.15)*100)
     },
     getAttempts(){return data.attempts},getByCat(c){return data.attempts.filter(x=>x.cat===c)},getByMode(m){return data.attempts.filter(x=>x.mode===m)},
-    reset(){data.attempts=[];data.srs={};data.totalSessions=1;data.firstOpened=Date.now();saveAndSync()},
+    reset(){data.attempts=[];data.srs={};data.totalSessions=1;data.firstOpened=Date.now();saveAndSync();try{sessionStorage.setItem('ib_history_just_reset','1')}catch(e){}},
     exportData(){return JSON.stringify(data,null,2)},
     importData(json){try{const p=JSON.parse(json);if(!p.attempts&&!p.srs)throw new Error('Invalid');data.attempts=p.attempts||[];data.srs=p.srs||{};data.totalSessions=p.totalSessions||1;data.firstOpened=p.firstOpened||Date.now();saveAndSync();return{success:true,cards:Object.keys(data.srs).length,attempts:data.attempts.length}}catch(e){return{success:false,error:e.message}}},
     async pullFromCloud(){const r=await CloudSync.pull();if(!r.ok)return r;if(!r.data||r.empty)return{ok:true,msg:'No cloud data'};const cl=r.data,lA=data.attempts.length,cA=(cl.attempts||[]).length;if(cA>lA||(cA===lA&&Object.keys(cl.srs||{}).length>Object.keys(data.srs).length)){data.attempts=cl.attempts||[];data.srs=cl.srs||{};data.totalSessions=Math.max(data.totalSessions,cl.totalSessions||0);data.firstOpened=Math.min(data.firstOpened,cl.firstOpened||Date.now());save();return{ok:true,msg:`Pulled ${cA} rounds from cloud`,replaced:true}}return{ok:true,msg:`Local is newer.`,replaced:false}},
@@ -1000,9 +1000,36 @@ function StatsTab(){
     {['Recall','Mastery','TypeIt'].map(m=>{const a=stats.getByMode(m);const avg=a.length?Math.round(a.reduce((s,x)=>s+x.score/x.total,0)/a.length*100):0;
       return <div key={m} style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}><div style={{width:70,fontSize:'.82rem',color:'var(--text2)'}}>{m}</div><div style={{flex:1,height:6,background:'var(--bg4)',borderRadius:3,overflow:'hidden'}}><div style={{height:'100%',width:`${avg}%`,background:avg>=70?'var(--green)':avg>=40?'var(--accent)':'var(--red)',borderRadius:3,transition:'width .5s'}}/></div><div style={{width:55,textAlign:'right',fontSize:'.78rem',fontFamily:'var(--font-mono)',color:a.length?'var(--text)':'var(--text3)'}}>{avg}% ({a.length})</div></div>})}
 
-    <div style={{marginTop:24,display:'flex',gap:10}}><button className="btn btn-ghost btn-sm" onClick={()=>{if(confirm('Reset all progress?')){stats.reset();location.reload()}}}>Reset Progress</button></div>
+    <ResetButton stats={stats}/>
     <ImportExport/>
   </div>
+}
+
+function ResetButton({stats}){
+  const [step,setStep]=useState(0);// 0=idle, 1=first confirm, 2=type confirm
+  const [typed,setTyped]=useState('');
+  const iRef=useRef();
+  useEffect(()=>{if(step===2)setTimeout(()=>iRef.current?.focus(),100)},[step]);
+  if(step===0)return <div style={{marginTop:24}}><button className="btn btn-ghost btn-sm" onClick={()=>setStep(1)}>Reset Progress</button></div>;
+  if(step===1)return(<div style={{marginTop:24,padding:16,background:'var(--red-dim)',border:'1px solid #3d1a1a',borderRadius:'var(--radius-lg)'}}>
+    <div style={{fontSize:'.9rem',fontWeight:600,color:'var(--red)',marginBottom:6}}>⚠️ Are you sure?</div>
+    <div style={{fontSize:'.82rem',color:'var(--text2)',marginBottom:12}}>This will permanently delete all your practice history, SRS progress, and cloud save data. This cannot be undone.</div>
+    <div style={{display:'flex',gap:8}}>
+      <button className="btn btn-sm" style={{background:'var(--red)',color:'#000'}} onClick={()=>setStep(2)}>Yes, I'm sure</button>
+      <button className="btn btn-ghost btn-sm" onClick={()=>setStep(0)}>Cancel</button>
+    </div>
+  </div>);
+  return(<div style={{marginTop:24,padding:16,background:'var(--red-dim)',border:'1px solid #3d1a1a',borderRadius:'var(--radius-lg)'}}>
+    <div style={{fontSize:'.9rem',fontWeight:600,color:'var(--red)',marginBottom:6}}>⚠️ Final confirmation</div>
+    <div style={{fontSize:'.82rem',color:'var(--text2)',marginBottom:10}}>Type <strong style={{color:'var(--red)'}}>RESET</strong> to confirm.</div>
+    <div style={{display:'flex',gap:8,alignItems:'center'}}>
+      <input ref={iRef} style={{padding:'8px 12px',background:'var(--bg3)',border:`2px solid ${typed==='RESET'?'var(--red)':'var(--bg4)'}`,borderRadius:'var(--radius)',color:'var(--text)',fontSize:'.85rem',width:120,outline:'none',fontFamily:'var(--font-mono)',letterSpacing:'.1em'}}
+        placeholder="RESET" value={typed} onChange={e=>setTyped(e.target.value.toUpperCase())}
+        onKeyDown={e=>{if(e.key==='Enter'&&typed==='RESET'){stats.reset();location.reload()}}}/>
+      <button className="btn btn-sm" style={{background:typed==='RESET'?'var(--red)':'var(--bg4)',color:typed==='RESET'?'#000':'var(--text3)',transition:'all .2s'}} disabled={typed!=='RESET'} onClick={()=>{stats.reset();location.reload()}}>Confirm Reset</button>
+      <button className="btn btn-ghost btn-sm" onClick={()=>{setStep(0);setTyped('')}}>Cancel</button>
+    </div>
+  </div>);
 }
 function ImportExport(){
   const stats=useStats();
@@ -1015,9 +1042,10 @@ function ImportExport(){
   const [syncing,setSyncing]=useState(false);
   const fileInputRef=useRef();
 
-  // Auto-pull on mount if cloud is configured
+  // Auto-pull on mount if cloud is configured (skip if just reset)
   useEffect(()=>{
     if(CloudSync.isConfigured()){
+      try{if(sessionStorage.getItem('ib_history_just_reset')){sessionStorage.removeItem('ib_history_just_reset');return}}catch(e){}
       setSyncing(true);
       stats.pullFromCloud().then(r=>{setSyncStatus(r);setSyncing(false);if(r.replaced)setTimeout(()=>location.reload(),1000)});
     }
