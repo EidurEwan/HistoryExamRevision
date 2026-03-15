@@ -1,0 +1,1382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="IB History SL">
+<title>IB History SL — Final Exam Revision</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0c0f14;--bg2:#13171f;--bg3:#1a1f2b;--bg4:#222838;
+  --text:#e8e6e1;--text2:#a09d96;--text3:#6b6860;
+  --accent:#c9a84c;--accent2:#e8c96a;--accent-dim:#3d3420;
+  --green:#4ade80;--green-dim:#0d2818;--red:#f87171;--red-dim:#2d1216;
+  --blue:#60a5fa;--blue-dim:#121d2e;--orange:#fb923c;
+  --cold-war:#5b8def;--auth-states:#e06c50;--reconquest:#50b87a;
+  --radius:10px;--radius-lg:16px;
+  --font-display:'Crimson Pro',Georgia,serif;
+  --font-body:'DM Sans',system-ui,sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%}
+body{font-family:var(--font-body);background:var(--bg);color:var(--text);min-height:100vh;min-height:100dvh;overflow-x:hidden}
+input,button,textarea{font-family:inherit;font-size:inherit}
+input{font-size:16px!important}
+button{cursor:pointer;border:none;background:none;color:inherit}
+::-webkit-scrollbar{width:6px;height:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--bg4);border-radius:3px}
+::selection{background:var(--accent);color:var(--bg)}
+
+.app-wrap{max-width:900px;margin:0 auto;padding:0 16px 100px}
+@media(min-width:640px){.app-wrap{padding:0 24px 40px}}
+
+.header{text-align:center;padding:28px 0 8px;position:relative}
+.header h1{font-family:var(--font-display);font-size:1.9rem;font-weight:700;letter-spacing:-0.02em;color:var(--accent2)}
+.header p{color:var(--text2);font-size:.82rem;margin-top:4px;letter-spacing:.03em;text-transform:uppercase}
+
+.tab-bar{display:flex;gap:4px;justify-content:center;padding:12px 0 20px;flex-wrap:wrap}
+.tab-btn{padding:8px 18px;border-radius:99px;font-size:.82rem;font-weight:600;color:var(--text2);transition:all .2s;position:relative;letter-spacing:.01em}
+.tab-btn:hover{color:var(--text);background:var(--bg3)}
+.tab-btn.active{color:var(--bg);background:var(--accent);box-shadow:0 2px 12px #c9a84c33}
+.tab-btn .dot{position:absolute;top:4px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--red);display:none;box-shadow:0 0 6px var(--red)}
+.tab-btn .dot.show{display:block;animation:pulse 2s infinite}
+
+.card{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius-lg);padding:20px;margin-bottom:12px;transition:border-color .2s}
+.card:hover{border-color:var(--accent-dim)}
+.card-title{font-family:var(--font-display);font-size:1.15rem;font-weight:600;margin-bottom:6px}
+.card-sub{color:var(--text2);font-size:.85rem;line-height:1.5}
+.card-tag{display:inline-block;padding:3px 10px;border-radius:99px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+
+.btn{padding:10px 20px;border-radius:var(--radius);font-weight:600;font-size:.85rem;transition:all .15s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--accent);color:var(--bg);box-shadow:0 2px 8px #c9a84c22}
+.btn-primary:hover{background:var(--accent2);transform:translateY(-1px)}
+.btn-ghost{border:1px solid var(--bg4);color:var(--text2)}
+.btn-ghost:hover{border-color:var(--accent-dim);color:var(--text)}
+.btn-correct{background:var(--green);color:#000}
+.btn-wrong{background:var(--red);color:#000}
+.btn-sm{padding:6px 14px;font-size:.78rem}
+
+.mode-bar{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.mode-btn{padding:7px 16px;border-radius:var(--radius);font-size:.78rem;font-weight:600;color:var(--text3);border:1px solid var(--bg4);transition:all .2s;position:relative}
+.mode-btn:hover{color:var(--text2);border-color:var(--text3)}
+.mode-btn.active{color:var(--accent);border-color:var(--accent);background:var(--accent-dim)}
+.mode-btn .srs-dot{position:absolute;top:-2px;right:-2px;width:8px;height:8px;border-radius:50%;background:var(--orange);box-shadow:0 0 6px var(--orange)}
+
+.cat-bar{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap}
+.cat-chip{padding:5px 14px;border-radius:99px;font-size:.75rem;font-weight:600;border:1px solid var(--bg4);color:var(--text3);transition:all .2s}
+.cat-chip:hover{color:var(--text2)}
+.cat-chip.active{color:#fff;border-color:transparent}
+
+.search-wrap{position:relative;margin-bottom:16px}
+.search-wrap input{width:100%;padding:10px 16px 10px 40px;background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius);color:var(--text);font-size:.9rem;outline:none;transition:border-color .2s}
+.search-wrap input:focus{border-color:var(--accent)}
+.search-wrap .icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:.9rem}
+
+.flashcard{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius-lg);min-height:220px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 24px;cursor:pointer;transition:all .3s;position:relative;text-align:center;user-select:none}
+.flashcard:hover{border-color:var(--accent-dim);box-shadow:0 4px 20px #0003}
+.flashcard .label{position:absolute;top:12px;left:16px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--text3)}
+.flashcard .counter{position:absolute;top:12px;right:16px;font-size:.75rem;color:var(--text3);font-family:var(--font-mono)}
+.flashcard .question{font-family:var(--font-display);font-size:1.25rem;font-weight:600;line-height:1.4;max-width:600px}
+.flashcard .answer{font-size:.95rem;line-height:1.6;color:var(--text2);max-width:600px}
+.flashcard .flip-hint{position:absolute;bottom:12px;font-size:.7rem;color:var(--text3);letter-spacing:.03em}
+.flashcard .srs-badge{position:absolute;bottom:12px;right:16px;font-size:.65rem;padding:2px 8px;border-radius:99px;font-weight:600;letter-spacing:.03em}
+
+/* Split progress bar */
+.split-progress{display:flex;height:6px;border-radius:3px;overflow:hidden;margin-bottom:16px;background:var(--bg4);gap:1px}
+.split-progress .seg{height:100%;transition:all .3s ease;min-width:0}
+.split-progress .seg:first-child{border-radius:3px 0 0 3px}
+.split-progress .seg:last-child{border-radius:0 3px 3px 0}
+
+.stat-ring{width:140px;height:140px;position:relative;margin:0 auto 20px}
+.stat-ring svg{transform:rotate(-90deg)}
+.stat-ring .value{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.stat-ring .value .num{font-family:var(--font-display);font-size:2.2rem;font-weight:700;color:var(--accent2)}
+.stat-ring .value .label{font-size:.7rem;color:var(--text3);text-transform:uppercase;letter-spacing:.06em}
+
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius);padding:16px;text-align:center}
+.stat-card .num{font-family:var(--font-display);font-size:1.6rem;font-weight:700}
+.stat-card .label{font-size:.72rem;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+
+.type-input{width:100%;padding:12px 16px;background:var(--bg2);border:2px solid var(--bg4);border-radius:var(--radius);color:var(--text);font-size:.95rem;outline:none;transition:border-color .2s}
+.type-input:focus{border-color:var(--accent)}
+.type-input.correct{border-color:var(--green);background:var(--green-dim)}
+.type-input.wrong{border-color:var(--red);background:var(--red-dim)}
+
+.expandable{cursor:pointer}
+.expandable .chevron{transition:transform .2s;display:inline-block;margin-left:6px;font-size:.7em}
+.expandable.open .chevron{transform:rotate(180deg)}
+
+.due-banner{background:linear-gradient(135deg,var(--accent-dim),var(--bg2));border:1px solid var(--accent-dim);border-radius:var(--radius);padding:12px 16px;margin-bottom:16px;display:flex;align-items:center;gap:10px;font-size:.85rem;cursor:pointer;transition:border-color .2s}
+.due-banner:hover{border-color:var(--accent)}
+.due-banner .pulse{width:8px;height:8px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;flex-shrink:0}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+.results-overlay{text-align:center;padding:40px 20px}
+.results-overlay .score{font-family:var(--font-display);font-size:3rem;font-weight:700;margin:12px 0}
+.results-overlay .msg{color:var(--text2);margin-bottom:24px}
+
+.exam-q{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius-lg);padding:20px;margin-bottom:12px}
+.exam-q .q-text{font-family:var(--font-display);font-size:1.05rem;line-height:1.5;margin-bottom:10px}
+.exam-q textarea{width:100%;min-height:120px;background:var(--bg3);border:1px solid var(--bg4);border-radius:var(--radius);padding:12px;color:var(--text);font-size:.9rem;resize:vertical;outline:none}
+.exam-q textarea:focus{border-color:var(--accent)}
+
+.timer-display{font-family:var(--font-mono);font-size:2.5rem;font-weight:700;text-align:center;color:var(--accent2);margin:16px 0}
+
+/* Criteria section */
+.criteria-section{margin-bottom:20px}
+.criteria-card{background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius-lg);padding:20px;margin-bottom:12px}
+.criteria-card h3{font-family:var(--font-display);font-size:1.1rem;font-weight:700;margin-bottom:8px;color:var(--accent2)}
+.criteria-card h4{font-family:var(--font-display);font-size:.95rem;font-weight:600;margin:12px 0 6px;color:var(--text)}
+.criteria-card p,.criteria-card li{font-size:.85rem;color:var(--text2);line-height:1.6}
+.criteria-card ul{padding-left:18px;margin:4px 0 8px}
+.criteria-card li{margin-bottom:3px}
+.band-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:var(--radius);margin-bottom:4px;font-size:.82rem}
+.band-row .band-label{font-weight:700;min-width:60px;font-family:var(--font-mono);font-size:.78rem}
+.band-row .band-desc{color:var(--text2);flex:1}
+
+/* SRS schedule */
+.srs-card-row{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--bg2);border:1px solid var(--bg4);border-radius:var(--radius);margin-bottom:6px;font-size:.82rem}
+.srs-card-row .srs-q{flex:1;color:var(--text)}
+.srs-card-row .srs-meta{color:var(--text3);font-family:var(--font-mono);font-size:.72rem;flex-shrink:0}
+.srs-card-row .srs-status{padding:2px 8px;border-radius:99px;font-size:.68rem;font-weight:600;flex-shrink:0}
+
+@media(max-width:639px){
+  .header{padding:16px 0 4px}
+  .header h1{font-size:1.4rem}
+  .tab-bar{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--bg4);padding:8px 8px calc(8px + env(safe-area-inset-bottom));z-index:100;justify-content:space-around;flex-wrap:nowrap;gap:2px}
+  .tab-btn{padding:6px 10px;font-size:.7rem}
+  .app-wrap{padding-bottom:90px}
+}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.fade-in{animation:fadeIn .3s ease}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.slide-up{animation:slideUp .4s ease}
+
+/* Story timeline */
+.story-wrap{max-width:720px;margin:0 auto}
+.story-title{font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--accent2);margin-bottom:4px}
+.story-topic-tag{display:inline-block;padding:3px 12px;border-radius:99px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em;margin-bottom:20px}
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:10px;top:8px;bottom:8px;width:2px;background:var(--bg4)}
+.tl-event{position:relative;margin-bottom:24px;animation:fadeIn .4s ease both}
+.tl-event:nth-child(1){animation-delay:.05s}.tl-event:nth-child(2){animation-delay:.1s}.tl-event:nth-child(3){animation-delay:.15s}
+.tl-event:nth-child(4){animation-delay:.2s}.tl-event:nth-child(5){animation-delay:.25s}.tl-event:nth-child(6){animation-delay:.3s}
+.tl-event:nth-child(7){animation-delay:.35s}.tl-event:nth-child(8){animation-delay:.4s}
+.tl-dot{position:absolute;left:-26px;top:6px;width:12px;height:12px;border-radius:50%;border:2px solid var(--accent);background:var(--bg)}
+.tl-year{font-family:var(--font-mono);font-size:.78rem;font-weight:600;color:var(--accent);margin-bottom:4px;letter-spacing:.02em}
+.tl-text{font-size:.9rem;color:var(--text2);line-height:1.75;font-family:var(--font-display);font-weight:400}
+.tl-text strong{color:var(--text);font-weight:600}
+.story-nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useRef,useContext,createContext,useMemo,useCallback}=React;
+
+// ─── SOUND EFFECTS ───
+const SFX={
+  _ctx:null,
+  _getCtx(){if(!this._ctx)this._ctx=new(window.AudioContext||window.webkitAudioContext)();return this._ctx},
+  _play(freq,dur,type='sine',vol=.12){try{const c=this._getCtx(),o=c.createOscillator(),g=c.createGain();o.type=type;o.frequency.value=freq;g.gain.value=vol;o.connect(g);g.connect(c.destination);o.start();g.gain.exponentialRampToValueAtTime(.001,c.currentTime+dur);o.stop(c.currentTime+dur)}catch(e){}},
+  flip(){this._play(800,.08);setTimeout(()=>this._play(1200,.06),40)},
+  correct(){this._play(523,.1);setTimeout(()=>this._play(659,.1),80);setTimeout(()=>this._play(784,.15),160)},
+  wrong(){this._play(300,.15,'square',.08);setTimeout(()=>this._play(220,.2,'square',.06),100)},
+  complete(){this._play(523,.12);setTimeout(()=>this._play(659,.12),100);setTimeout(()=>this._play(784,.12),200);setTimeout(()=>this._play(1047,.25),300)},
+  tap(){this._play(600,.04,'sine',.06)}
+};
+
+// ─── CLOUD SYNC (Google Apps Script) ───
+const CloudSync={
+  _urlKey:'ib_history_cloud_url',
+  _statusKey:'ib_history_cloud_status',
+  getUrl(){try{return localStorage.getItem(this._urlKey)||''}catch(e){return''}},
+  setUrl(url){try{localStorage.setItem(this._urlKey,url)}catch(e){}},
+  getStatus(){try{return JSON.parse(localStorage.getItem(this._statusKey)||'{}')}catch(e){return{}}},
+  _setStatus(s){try{localStorage.setItem(this._statusKey,JSON.stringify(s))}catch(e){}},
+
+  async push(data){
+    const url=this.getUrl();if(!url)return{ok:false,error:'No sync URL set'};
+    try{
+      const resp=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'save',data:data}),redirect:'follow'});
+      // Apps Script redirects — if we get a response at all, try to parse
+      let result;
+      try{result=await resp.json()}catch(e){result={success:resp.ok}}
+      if(result.success||resp.ok){this._setStatus({lastPush:Date.now(),ok:true});return{ok:true}}
+      return{ok:false,error:'Server returned error'}
+    }catch(e){this._setStatus({lastPush:Date.now(),ok:false,error:e.message});return{ok:false,error:e.message}}
+  },
+
+  async pull(){
+    const url=this.getUrl();if(!url)return{ok:false,error:'No sync URL set'};
+    try{
+      const resp=await fetch(url+'?action=load',{redirect:'follow'});
+      const text=await resp.text();
+      if(!text||text==='{}')return{ok:true,data:null,empty:true};
+      const data=JSON.parse(text);
+      if(data.attempts||data.srs){this._setStatus({lastPull:Date.now(),ok:true});return{ok:true,data}}
+      return{ok:true,data:null,empty:true}
+    }catch(e){return{ok:false,error:e.message}}
+  },
+
+  isConfigured(){return!!this.getUrl()},
+};
+
+// ─── DATA ───
+const TOPICS={
+  coldWar:{label:"Cold War",color:"var(--cold-war)",icon:"❄️"},
+  authStates:{label:"Authoritarian States",color:"var(--auth-states)",icon:"⚔️"},
+  reconquest:{label:"Reconquest & Conquest",color:"var(--reconquest)",icon:"🌎"}
+};
+
+const CATEGORIES={
+  cw_origins:{label:"Origins 1945-47",topic:"coldWar",color:"#5b8def"},
+  cw_containment:{label:"Containment in Asia",topic:"coldWar",color:"#4c7bd4"},
+  cw_crises:{label:"Key Crises",topic:"coldWar",color:"#3d6aba"},
+  cw_policy:{label:"US Foreign Policy",topic:"coldWar",color:"#6e9cf5"},
+  cw_end:{label:"End of Cold War",topic:"coldWar",color:"#83aef7"},
+  au_muss_rise:{label:"Mussolini: Rise",topic:"authStates",color:"#e06c50"},
+  au_muss_power:{label:"Mussolini: In Power",topic:"authStates",color:"#d45a3e"},
+  au_peron_rise:{label:"Perón: Rise",topic:"authStates",color:"#e8845e"},
+  au_peron_power:{label:"Perón: In Power",topic:"authStates",color:"#d4724c"},
+  au_castro_rise:{label:"Castro: Rise",topic:"authStates",color:"#f09070"},
+  au_castro_power:{label:"Castro: In Power",topic:"authStates",color:"#c4563a"},
+  rc_islamic:{label:"Islamic Iberia",topic:"reconquest",color:"#50b87a"},
+  rc_reconquest:{label:"The Reconquest",topic:"reconquest",color:"#40a568"},
+  rc_expulsions:{label:"Expulsions",topic:"reconquest",color:"#60c88a"},
+  rc_mexico:{label:"Conquest of Mexico",topic:"reconquest",color:"#389258"},
+  rc_peru:{label:"Conquest of Peru",topic:"reconquest",color:"#70d89a"},
+  rc_colonial:{label:"Colonial Systems",topic:"reconquest",color:"#48b070"}
+};
+
+// Each card gets a unique ID for SRS tracking
+const CARDS=[
+  // ═══ COLD WAR: ORIGINS ═══
+  {id:"cw1",q:"What was the Iron Curtain speech?",a:"Churchill's 1946 speech warning that a Soviet 'iron curtain' had descended across Europe. Initially poorly received in the USA but signaled the Western stance against Soviet expansion. Stalin compared Churchill to Hitler in response.",cat:"cw_origins"},
+  {id:"cw2",q:"What was Kennan's Long Telegram?",a:"George Kennan's 1946 telegram from Moscow warning that the USSR intended to expand worldwide and must be contained. It alarmed Washington and became the foundation of US containment policy.",cat:"cw_origins"},
+  {id:"cw3",q:"What was the state of the USSR after WWII?",a:"27 million Soviet citizens and soldiers died. Everything from borders to Moscow lay in ruins. Nearly 70,000 villages destroyed by Nazi Germany. Stalin's 5-year plan was ruined. Living conditions were terrible.",cat:"cw_origins"},
+  {id:"cw4",q:"What were Soviet methods to impose rule in Eastern Europe?",a:"Leaders of opposing parties would 'disappear.' Anyone suspected of straying from Soviet communism was arrested, including German POWs. The USSR shifted Poland westward, seized homes, and 12 million Germans were expelled across Europe.",cat:"cw_origins"},
+  {id:"cw5",q:"What was the Truman Doctrine (1947)?",a:"US policy to prevent the spread of communism globally. Triggered when Britain could no longer support Greece and Turkey. Congress approved $400 million in aid. Established a clear US commitment to containment and marked the ideological split of the Cold War.",cat:"cw_origins"},
+  {id:"cw6",q:"What was the Marshall Plan?",a:"US economic aid program for European recovery (1948). 17 countries participated, requesting $20 billion. Aimed to prevent communism by addressing economic instability. Stalin ordered Eastern bloc countries not to participate and established COMECON as a counter.",cat:"cw_origins"},
+  {id:"cw7",q:"How did the Marshall Plan affect Czechoslovakia?",a:"Initially agreed to join the Marshall Plan, but Stalin pressured Czechoslovakia to withdraw. In 1948, communists seized control of the government, cementing Soviet dominance and turning it into a puppet state.",cat:"cw_origins"},
+  {id:"cw8",q:"How did Yugoslavia respond to the Marshall Plan?",a:"Tito led Yugoslavia to communism independently of the USSR, maintaining a fragile alliance with Stalin. Due to tensions with Stalin, Yugoslavia accepted US aid (over $150 million). Its independence from Soviet influence was a significant Cold War victory for the US.",cat:"cw_origins"},
+  {id:"cw9",q:"What was the role of the CIA in the early Cold War?",a:"The CIA conducted covert operations including funding anti-communist campaigns in Italy's 1948 elections. They supported democratic parties and countered communist influence through financial and strategic interventions across Europe.",cat:"cw_origins"},
+  {id:"cw10",q:"What was the impact of the Marshall Plan on France?",a:"Communist-led strikes in 1947 created instability. The US warned no aid would come until the communist threat diminished. After cracking down on communist influence, France received $2.7 billion in Marshall Plan aid.",cat:"cw_origins"},
+  {id:"cw11",q:"What was NSC-68?",a:"A 1950 US national security document outlining the strategy to contain the Soviets and communism. It led to the creation of SEATO (the Asian equivalent of NATO), and a significant increase in military budget and pressure.",cat:"cw_containment"},
+  {id:"cw12",q:"Why did Truman call Korea 'the Greece of the Far East'?",a:"Just as the US had supported Greece to contain communism in Europe, Korea was seen as equally significant in Asia. Intervention was necessary to defend freedom and democracy against communist expansion in the Far East.",cat:"cw_containment"},
+  {id:"cw13",q:"What was the significance of the Korean War?",a:"The first armed conflict between capitalist and communist forces. It globalized the Cold War beyond Europe. One of the first instances of the UN leading a military coalition. Redefined US military-political power and led to massive military spending increases.",cat:"cw_containment"},
+  {id:"cw14",q:"How successful was US containment in Korea?",a:"Partially successful — prevented further invasion of South Korea but at extreme cost (millions of casualties). Barely a success due to the resultant birth of a new communist power in China. The Korean peninsula remains divided.",cat:"cw_containment"},
+  {id:"cw15",q:"How did Japan fit into US containment strategy?",a:"The US made Japan a capitalist power to counterbalance China. Never at risk of falling to communism as it was occupied by the US after WWII. The 1952 American-Japanese Security Treaty left Japan under US protection, making it the protector of capitalism in Asia.",cat:"cw_containment"},
+  {id:"cw16",q:"What was the Formosa Resolution?",a:"After Chinese bombardment of Taiwan in 1953, the US passed this resolution allowing whatever military action necessary to defend Taiwan. Eisenhower threatened nuclear weapons against China if they took over Taiwan, successfully containing communism there.",cat:"cw_containment"},
+  {id:"cw17",q:"Why was the Vietnam War a failure for US containment?",a:"The Gulf of Tonkin Resolution (1964) led to Operation Rolling Thunder (30,000 civilian casualties). First uncensored televised war showed atrocities, causing domestic protests. The US lost the war. The Domino Theory came true when Laos and Cambodia fell to communism in 1975.",cat:"cw_containment"},
+  {id:"cw18",q:"What caused the Berlin Crisis (1958-61)?",a:"Brain drain: skilled workers moved from East to West Berlin for higher pay. Free travel meant West Berliners bought cheap goods in East Berlin, causing scarcity. FRG was in NATO with tactical nuclear weapons. Khrushchev demanded Western troop withdrawal and Berlin as a 'Free City'.",cat:"cw_crises"},
+  {id:"cw19",q:"Why was the Berlin Wall built (August 1961)?",a:"Khrushchev was compelled to act due to the growing economic crisis — over 300,000 people had fled East Berlin. The wall assured the existence of the GDR, and Western powers were forced to recognize it by tolerating its construction.",cat:"cw_crises"},
+  {id:"cw20",q:"What was the impact of the Berlin Crisis?",a:"German-American relations suffered, Berlin relied more on France. The Wall highlighted the weakness of the Soviet bloc and was a propaganda loss for communism. Germany was no longer a pressure point in US-Soviet relations.",cat:"cw_crises"},
+  {id:"cw21",q:"What were the three main causes of the Cuban Missile Crisis?",a:"1) The Cuban Revolution (1959): Castro's communist regime 90 miles from the US. 2) The Bay of Pigs failure (1961): strengthened Castro, weakened Kennedy's image. 3) Discovery of Soviet missile sites in Cuba by U2 planes (1962), placed in response to US missiles in Turkey.",cat:"cw_crises"},
+  {id:"cw22",q:"How was Kennedy viewed after the Cuban Missile Crisis?",a:"Orthodox view: calm and decisive leader who navigated the crisis. Revisionist view: reckless and self-interested, risking nuclear war for political gain.",cat:"cw_crises"},
+  {id:"cw23",q:"What were the impacts of the Cuban Missile Crisis?",a:"A hotline between US and USSR established. Limited Test Ban Treaty and Nuclear Non-Proliferation Treaty signed. Arms race escalated but the world became more secure. Khrushchev was humiliated. Chinese-Soviet relations deteriorated further as China saw USSR as no longer revolutionary.",cat:"cw_crises"},
+  {id:"cw24",q:"Which crisis was more dangerous — Berlin or Cuba?",a:"The Cuban Missile Crisis was closer to direct military conflict. The USSR placed nuclear missiles in Cuba; the US created a naval blockade ('quarantine'). This brought both superpowers to the brink of nuclear war. The Berlin Crisis was more propaganda-focused.",cat:"cw_crises"},
+  {id:"cw25",q:"What was Eisenhower's New Look policy?",a:"Aimed to stop communism from spreading outside existing areas, expecting the USSR would collapse on its own. Increased reliance on nuclear arsenal to show the USSR that direct conflict meant mutually assured destruction. Differed from NSC-68 by avoiding direct military confrontation.",cat:"cw_policy"},
+  {id:"cw26",q:"Compare Eisenhower's New Look with Truman's Containment.",a:"Both: assisted forces resisting communism, used military power to protect vulnerable areas. New Look additions: SEATO alliance to encircle USSR, CIA covert operations (Iran, Guatemala), increased nuclear reliance, brinkmanship strategy.",cat:"cw_policy"},
+  {id:"cw27",q:"Define Brinkmanship.",a:"Advancing to the stage of war but not engaging in it. Threatening to use nuclear weapons to scare off aggressors and make them back down. Massive threats of retaliation to demonstrate containment resolve.",cat:"cw_policy"},
+  {id:"cw28",q:"Define Roll-back.",a:"A proposition by Secretary of State Dulles to liberate communist countries in Europe and push communism out through war. Never actually carried out, though the US aided many counter-Soviet revolutions in European countries.",cat:"cw_policy"},
+  {id:"cw29",q:"What was Massive Retaliation?",a:"Eisenhower's countermeasure if Taiwan was taken by China — China would be bombarded with nuclear weapons by the USA. A core element of the New Look policy's reliance on nuclear deterrence.",cat:"cw_policy"},
+  {id:"cw30",q:"What was Perestroika?",a:"Meaning 'restructuring' — Gorbachev's policy aimed at reforming and restructuring the Soviet economy. Part of his 'new thinking' that prioritized Soviet citizens' well-being over spreading communism.",cat:"cw_end"},
+  {id:"cw31",q:"What was Glasnost?",a:"Meaning 'openness' — the principle that every area of the regime should be open to public scrutiny. Allowed conversation and criticism of the Soviet system, and comparison between communism and capitalism.",cat:"cw_end"},
+  {id:"cw32",q:"What was Gorbachev's impact on the Cold War?",a:"Introduced new thinking focused on citizens' well-being. Worked to undo Stalin's legacy through Perestroika and Glasnost. Reduced military spending for a stable economy. Abandoned the Brezhnev Doctrine (Sinatra Doctrine 1988), allowing peaceful collapse of satellite states.",cat:"cw_end"},
+  {id:"cw33",q:"What was Reagan's role in ending the Cold War?",a:"Military spending in early 1980s forced Soviets to compete when they couldn't afford it. SDI (Star Wars, 1983) undermined MAD and left USSR vulnerable. Proved a good negotiator who reversed his views on communism's 'evils.' Pressured the USSR even when they couldn't retaliate.",cat:"cw_end"},
+  {id:"cw34",q:"What was the INF Treaty (1987)?",a:"The Intermediate-range Nuclear Forces Treaty, signed by Gorbachev. It demonstrated his passive and cooperative approach toward the West, aiming to reduce nuclear weapons and end the arms race through negotiations.",cat:"cw_end"},
+  {id:"cw35",q:"What role did the Soviet economy play in ending the Cold War?",a:"Under Brezhnev, ~25% of GDP was spent on military. Gorbachev inherited this drained, declining economy, which forced him to negotiate, reform, and take actions that led to the Cold War's end.",cat:"cw_end"},
+  {id:"cw36",q:"What happened in Eastern Europe in 1989?",a:"Satellite states criticized the inefficiency of state-controlled industries. People near Western borders were critical of their living conditions. Gorbachev made clear he wouldn't use the Red Army against demonstrations, giving populations the green light for freedom.",cat:"cw_end"},
+  {id:"cw37",q:"What was the impact of the USSR's collapse?",a:"Capitalism seemed to have triumphed. Cuba and African regimes lost Soviet economic aid. International politics became 'uni-polar.' The USA became the only country capable of global military alliance.",cat:"cw_end"},
+  {id:"cw38",q:"Compare Gorbachev and Reagan.",a:"Both: saw dangers of nuclear weapons, worked together in summits, prepared to compromise. Contrast: Reagan started hardline then softened; Gorbachev started conciliatory. Gorbachev acted on internal USSR pressures; Reagan was willing to maintain spending. Gorbachev's actions had larger impact — led to USSR collapse.",cat:"cw_end"},
+
+  // ═══ MUSSOLINI ═══
+  {id:"mu1",q:"How strong was Italian parliamentary government before WWI?",a:"Weak. The 1848 Statuto gave the king broad powers. Voting rights limited to 2% of the population. Corruption through 'transformism' (leaders switching alliances). Regional differences, low literacy, and elite control led to frequent government changes.",cat:"au_muss_rise"},
+  {id:"mu2",q:"What was Italy's economy like before WWI?",a:"Unevenly modernized. The north developed industries (textiles, chemicals, steel), while the South remained poor and agricultural. 6 million people emigrated due to poverty. Per capita income rose modestly but Italy lagged behind other European nations.",cat:"au_muss_rise"},
+  {id:"mu3",q:"How did Italy seek great power status (1870-1914)?",a:"Joined the Triple Alliance (1882), gained colonies in Eritrea (1885), Somalia, and Libya (1911). The defeat at Adowa (1896) was humiliating. Italy remained the weakest great power with small, expensive colonies and dependence on stronger allies.",cat:"au_muss_rise"},
+  {id:"mu4",q:"What factors contributed to Italian Fascism after WWI?",a:"Economic issues: inflation, 2 million unemployed, high debt. Political instability from proportional representation and weak coalitions. Social conflicts from strikes and factory occupations frightened elites. Nationalism from 'mutilated victory' at Versailles. Mussolini's violent squads won support from veterans and middle class.",cat:"au_muss_rise"},
+  {id:"mu5",q:"What was the 'Red Biennium' (1919-1920)?",a:"Period of intense social unrest in Italy with many strikes and factory takeovers as workers demanded better pay. This frightened elites and middle class, who turned to Mussolini's Fascists as bringers of order and stability against socialism.",cat:"au_muss_rise"},
+  {id:"mu6",q:"How did Mussolini use propaganda in his rise?",a:"Used his newspaper Il Popolo d'Italia (since 1914) to spread nationalism and anti-communism. Fascist messages used Roman symbols like the fasces. The March on Rome (1922) was staged as a grand show. His media control rallied blackshirts and scared rivals.",cat:"au_muss_rise"},
+  {id:"mu7",q:"What was the March on Rome (1922)?",a:"Mussolini's Fascists marched on Rome to seize power. King Victor Emmanuel III did not intervene or declare martial law, fearing civil war. Instead, he appointed Mussolini as Prime Minister. The march was more propaganda show than military threat.",cat:"au_muss_rise"},
+  {id:"mu8",q:"What was the Acerbo Law (1923)?",a:"Gave the largest party (with at least 25% votes) two-thirds of parliamentary seats. Mussolini justified it as ensuring stable government. Supported by liberals and Catholics out of fear and hopes of controlling Mussolini within the system.",cat:"au_muss_power"},
+  {id:"mu9",q:"What was the Matteotti Crisis (1924)?",a:"Socialist deputy Matteotti was murdered after criticizing Fascist election fraud. Opposition withdrew from parliament but this failed. The King and elites backed Mussolini to avoid chaos. From 1925-26, Mussolini declared a dictatorship, banned opposition, censored press, created secret police.",cat:"au_muss_power"},
+  {id:"mu10",q:"What was Corporativism?",a:"A system where state-controlled 'corporations' represented each sector of the economy, including both workers and employers. Aimed to replace class struggle with national unity by forcing collaboration. In practice, it favoured businesses and enforced state dominance.",cat:"au_muss_power"},
+  {id:"mu11",q:"What were the Lateran Accords (1929)?",a:"Agreement between Fascists and the Catholic Church. The Church gained: Vatican City as independent state, 750 million lire compensation, Catholicism as official religion. Fascists gained: Church endorsement, control over appointments and youth organizations.",cat:"au_muss_power"},
+  {id:"mu12",q:"What was the Corporate State (1926-34)?",a:"Organized the economy into 22 sector corporations with employers, workers, and state representatives under Fascist control. Banned unions and strikes to promote unity. In practice, it favoured businesses and enforced state dominance.",cat:"au_muss_power"},
+  {id:"mu13",q:"Evaluate Mussolini's economic policies.",a:"Limited success. Public works, electrification, and grain self-sufficiency helped some sectors. But growth was slow, wages fell, exports suffered, the South lagged. Autarky led to inefficiency and shortages. GDP growth averaged only 1.5% annually. War preparation wasted resources.",cat:"au_muss_power"},
+  {id:"mu14",q:"Evaluate Fascism's social and economic impact on Italy.",a:"FOR: modernisation, infrastructure (railways, highways), welfare through Dopolavoro, raised literacy, IRI nationalised key industries, steel production rose 50%. AGAINST: class divisions persisted, South remained poor, women confined to domestic roles, autarky inefficient, GDP growth below pre-war levels.",cat:"au_muss_power"},
+
+  // ═══ PERÓN ═══
+  {id:"pe1",q:"What was Argentina like before Perón?",a:"Agricultural export economy (wheat and meat) dependent on European trade. The 'Infamous Decade' (1930s): coup, Great Depression, corrupt autocratic rule. Extreme class divide between wealthy oligarchy (2-3% owning 95% of land) and impoverished workers. European immigrants transformed demographics.",cat:"au_peron_rise"},
+  {id:"pe2",q:"What was the GOU?",a:"Group of United Officers — a secret society of young nationalist, anti-communist, ultra-Catholic military officers including Colonel Perón. They aimed to end corruption, restore the constitution, strengthen industry, maintain neutrality in WWII, and prevent communism by improving workers' conditions from above.",cat:"au_peron_rise"},
+  {id:"pe3",q:"How did Perón benefit from the Labour Department?",a:"After the 1943 coup, Perón became head of Labour (then Secretary of Labour and Welfare). He gained massive working-class support through social and labour reforms. Unions became dependent on him — workers feared losing gains if he was removed.",cat:"au_peron_rise"},
+  {id:"pe4",q:"How was Perón influenced by European fascism?",a:"He admired Fascist Italy's organisational methods and Mussolini's leadership. His observations of post-Civil War Spain's chaos reinforced his belief in strong, directive leadership. He learned practical ways to control and mobilise the masses.",cat:"au_peron_rise"},
+  {id:"pe5",q:"What happened on 17 October 1945?",a:"A massive protest/demonstration demanding Perón's release after his detention on 9 October. It showcased his growing working-class support and marked the awakening of workers' political consciousness. Led to his release and eventual rise to the presidency.",cat:"au_peron_rise"},
+  {id:"pe6",q:"Was Perón's rise mainly due to economic factors?",a:"FOR: Great Depression and WWII left high unemployment and inflation; pro-labour policies won working-class support. AGAINST: also driven by political/social dynamics — military support, union alliances, charismatic leadership, and populist rhetoric influenced by Mussolini.",cat:"au_peron_rise"},
+  {id:"pe7",q:"How did Perón consolidate power?",a:"Dissolved all supporting parties, created single party under his control (Partido Justicialista). Purged Supreme Court, censored press (110 publications closed 1943-46, La Prensa shut 1951), restricted opposition through police disruption. Created 1949 Constitution allowing re-election.",cat:"au_peron_power"},
+  {id:"pe8",q:"What was the Eva Perón Foundation (FEP)?",a:"By late 1940s, surpassed most government ministries in size and influence. Assets exceeded $200 million, employed 14,000 people. Distributed vast quantities of goods to the poor. Served as a powerful tool of Peronist political control.",cat:"au_peron_power"},
+  {id:"pe9",q:"What were Perón's main economic policies?",a:"Nationalized Central Bank (1946), railways, telecommunications. Import Substitution Industrialization (ISI) with tariffs and subsidies. Price and wage controls. State-led redistribution through subsidies. IAPI monopoly captured grain profits to fund urban industrialization.",cat:"au_peron_power"},
+  {id:"pe10",q:"Why did Perón fall in 1955?",a:"Economic decline after 1951 with inflation and shortages. Opposition from Church, armed forces, and political parties alienated by his authoritarianism and cult of Eva. Repressed freedoms and attacked the Church. After the June 1955 bombing, a military coup overthrew him on 16 September.",cat:"au_peron_power"},
+  {id:"pe11",q:"How did Perón use propaganda?",a:"State-controlled media, staged rallies, and visual icons portraying himself and Evita as saviours of the working class. New textbooks with Peronist messages. Teachers required to transmit Peronist doctrine. Education and media used for indoctrination.",cat:"au_peron_power"},
+
+  // ═══ CASTRO ═══
+  {id:"ca1",q:"Who was José Martí?",a:"Cuban poet, journalist, and revolutionary who founded the Cuban Revolutionary Party and launched the 1895 War of Independence against Spain. His writings and martyrdom inspired Cuba's independence in 1902. National hero whose ideas defined Cuban nationalism.",cat:"au_castro_rise"},
+  {id:"ca2",q:"What was Cuba's economy like before 1959?",a:"A sugar-dominated monoculture economy. US companies (United Fruit, Esso, Texaco) controlled key sectors. The Platt Amendment (1901-1934) imposed semi-colonial status. High per capita income but deep rural poverty, seasonal unemployment, and inequality.",cat:"au_castro_rise"},
+  {id:"ca3",q:"Who was Batista and how did he rule after 1952?",a:"Military officer who staged a coup in 1952. His regime was characterized by corruption, brutal repression, economic decline (17% unemployment), and ties to American organized crime. Meyer Lansky ran gambling operations. 'The two Batistas' — first term was populist, second was lazy and corrupt.",cat:"au_castro_rise"},
+  {id:"ca4",q:"What was the Moncada Assault (1953)?",a:"Failed attack by 140 rebels led by Castro on Cuba's second-largest barracks. Aimed to seize weapons and spark a nationwide uprising. Failed due to loss of surprise and strong army resistance. Nearly all attackers killed or captured. Led to the 26th of July Movement's founding.",cat:"au_castro_rise"},
+  {id:"ca5",q:"What was the Granma expedition (1956)?",a:"Castro's return from Mexican exile with ~80 rebels aboard an overloaded yacht. Despite delays, mechanical failures, and a devastating ambush at Alegría de Pío (only 12 survivors), the group regrouped in the Sierra Maestra to form the Rebel Army.",cat:"au_castro_rise"},
+  {id:"ca6",q:"How did Batista contribute to the revolution's success?",a:"Brutal repression (mass torture, killings) alienated the population. Corrupt, US-backed regime failed to address poverty and unemployment. Relied on military force rather than political solutions. Lost US backing in 1957 when caught misusing defence weapons. Army morale collapsed in 1958-59.",cat:"au_castro_rise"},
+  {id:"ca7",q:"How did Castro consolidate power (1959-62)?",a:"Removed batistianos and liberals. Crushed provincial revolts. Implemented radical reforms (land reform, nationalization). Eliminated rival figures. Moved toward communism. Declared himself Marxist-Leninist (December 1961). Founded PCC to centralize all control under himself.",cat:"au_castro_power"},
+  {id:"ca8",q:"What were Castro's main reforms (1959-62)?",a:"Agrarian Reform (state owned 70% of land by 1963). Nationalized foreign businesses, banks. Rents cut 50%, later abolished. Literacy campaign: 170,000 teachers, illiteracy dropped from 23% to 4%. More schools in 3 years than previous 58 years. FMC created for women.",cat:"au_castro_power"},
+  {id:"ca9",q:"How did the Bay of Pigs strengthen Castro?",a:"Humiliating US defeat = propaganda triumph. Validated warnings about US imperialism. Rallied population behind revolution. Justified crackdowns on opposition. Accelerated move toward communism and deeper USSR ties.",cat:"au_castro_power"},
+  {id:"ca10",q:"What was the Special Period (from 1991)?",a:"Began after USSR collapse — Soviet trade, subsidies, oil, technicians all ended suddenly. Severe food shortages, energy crisis. Response: state farms converted to cooperatives, foreign investment and tourism opened, US dollar legalized (1993), limited self-employment allowed.",cat:"au_castro_power"},
+  {id:"ca11",q:"What was Castro's treatment of opposition?",a:"CDR surveillance (1/3 of population enrolled), UMAP forced labour camps (1965-68) for ~25,000 dissidents and homosexuals. Show trials. All media controlled by state. No freedom of association against government. Emigration used as safety valve (Mariel Boatlift 1980: 125,000+ left).",cat:"au_castro_power"},
+  {id:"ca12",q:"Why did Castro embrace communism by December 1961?",a:"US hostility (embargo, Bay of Pigs) forced him to seek Soviet protection. Soviet aid required ideological alignment. Liberals removed, PSP (communists) dominated government. Influence of Che Guevara. Marxism-Leninism justified one-party rule.",cat:"au_castro_power"},
+  {id:"ca13",q:"To what extent did Castro achieve full authoritarian rule?",a:"FOR: one-party state, CDR surveillance, UMAP camps, media control, cult of personality, state-controlled economy. AGAINST: did not use mass terror like Stalin, emigration as safety valve, genuine popular support through education/healthcare, pragmatic adaptations during Special Period.",cat:"au_castro_power"},
+
+  // ═══ RECONQUEST & CONQUEST ═══
+  {id:"rc1",q:"Why was the Muslim conquest of Iberia so easy in 711?",a:"Division among the Goths, caused by struggles over kingship, allowed the Moors to easily cross into the peninsula and defeat Roderic, the last Gothic king.",cat:"rc_islamic"},
+  {id:"rc2",q:"What were the Moors' contributions to Iberia?",a:"Introduction of new irrigation and water-lifting devices. New crops: sugar, cotton, silk. Introduction of paper and glass. Advanced architecture, mathematics, medicine, and philosophy that influenced all of Western Europe.",cat:"rc_islamic"},
+  {id:"rc3",q:"What was 'La Convivencia'?",a:"The claimed period of cultural and religious harmony between Muslims, Christians, and Jews during Moorish rule. Criticized as an idealized view — David Nirenberg argues violence was a central aspect. Bernard Lewis still sees it as a 'golden age' by the standards of the time.",cat:"rc_islamic"},
+  {id:"rc4",q:"How were non-Muslims treated in Islamic Spain?",a:"Better than expected for conquered people: not in separate districts, not slaves, could practice faith (with restrictions), could earn a living. But had to: acknowledge Islamic superiority, pay extra taxes, wear a special badge, not carry weapons or marry Muslim women.",cat:"rc_islamic"},
+  {id:"rc5",q:"Why was the Caliphate's breakup significant?",a:"Internal political and religious conflicts led to collapse into numerous taifas (small kingdoms). This allowed Christian kingdoms in the north to survive, grow strong, and eventually launch the Reconquest advance against the Muslims.",cat:"rc_islamic"},
+  {id:"rc6",q:"What was the Reconquest?",a:"The Christian kingdoms' centuries-long campaign to reclaim the Iberian Peninsula from Muslim rule. St. James's tomb discovery gave Christians a warrior patron saint. By the end of the 13th century, Muslim territory was reduced to the small Kingdom of Granada.",cat:"rc_reconquest"},
+  {id:"rc7",q:"How did the Reconquest shape Castilian culture?",a:"Centuries of struggle made war almost a way of life, creating a large class of warrior-nobles who regarded manual labour with contempt. Mobile property (sheep) was favoured over agriculture due to constant warfare. This mentality was transferred to the New World.",cat:"rc_reconquest"},
+  {id:"rc8",q:"What did Ferdinand and Isabella achieve?",a:"Expansion of influence and the conquest of Granada (1492). Criticized for favouring the aristocracy — 2-3% of population owned 95% of land by 1500. Spain's industrial production never reached England's level due to peasant poverty (80% impoverished).",cat:"rc_reconquest"},
+  {id:"rc9",q:"What was the Treaty of Granada (1491)?",a:"Agreement between Boabdil and Ferdinand & Isabella that ended the Reconquista. Muslims promised: preservation of mosques, use of their language, ability to follow their own laws and customs. These promises were broken within a decade.",cat:"rc_reconquest"},
+  {id:"rc10",q:"When and why was the Spanish Inquisition established?",a:"Established in 1478 by Ferdinand and Isabella. Purpose: ensure religious orthodoxy and consolidate power in newly unified Spain. Targeted conversos — Jews and Muslims who had converted to Christianity but were suspected of secretly practicing their former religions.",cat:"rc_expulsions"},
+  {id:"rc11",q:"Who was Cardinal Cisneros?",a:"Isabella's confessor who became a key architect of the religious aftermath of 1492. Organized mass conversions and the burning of over 5,000 priceless Muslim books in Arabic. His actions helped trigger the First Rebellion of the Alpujarras (1499-1500).",cat:"rc_expulsions"},
+  {id:"rc12",q:"What happened to the Jews in 1492?",a:"The Edict of Expulsion accused Jews of enticing Christians. Previous measures (like banishing Jews from Andalusia) had failed. The monarchs concluded the only remedy was total removal. Jews had to choose: conversion or exile. Their expulsion crippled Spain's economy.",cat:"rc_expulsions"},
+  {id:"rc13",q:"When were the Moriscos expelled?",a:"Philip III issued the expulsion decree on 4 April 1609, carried out from October 1609. The majority settled in the Maghrib/Barbary Coast. Before this, Philip II had renewed restrictions on Arabic, dress, and customs in 1567, triggering the Second Rebellion of the Alpujarras.",cat:"rc_expulsions"},
+  {id:"rc14",q:"How did the expulsion of Jews cripple Spain?",a:"Jews were dominant in trade, finance, tax collection, and medicine. Their expulsion at the exact moment Spain gained an empire (1492) created an inherent weakness. The loss of skilled merchants and financiers weakened Spain's ability to manage its empire efficiently.",cat:"rc_expulsions"},
+  {id:"rc15",q:"What was 'limpieza de sangre'?",a:"'Purity of blood' — ideology emphasizing a Spain free of non-Christian elements. Conversos who stayed faced Inquisition scrutiny and wealth seizure. Non-Muslims secretly maintained their festivals and rituals, which Old Christians found offensive.",cat:"rc_expulsions"},
+  {id:"rc16",q:"Who was Hernán Cortés?",a:"Spanish conquistador who conquered the Aztec Empire. Enrolled at University of Salamanca's law faculty at 14. Had permission from Velázquez to explore and trade but NOT to colonize. Defied Velázquez's authority, then needed to quickly conquer Mexico and secure Charles V's backing.",cat:"rc_mexico"},
+  {id:"rc17",q:"What was the Prophecy of Quetzalcoatl?",a:"The prophecy held that the feathered serpent god would return in a specific year to reclaim his rule. 1519, when Cortés arrived, corresponded to that year. Quetzalcoatl was described as fair-skinned and bearded, arriving from the east — a description Cortés exploited.",cat:"rc_mexico"},
+  {id:"rc18",q:"Describe Tenochtitlán.",a:"Built on a salt lake, at least 250,000 inhabitants. Wide, straight main streets — half land, half canals. Marketplace comparable to Salamanca with 60,000 daily traders. Numerous temples, 40 towers (some taller than Seville's cathedral). Fresh water from Chapultepec aqueduct.",cat:"rc_mexico"},
+  {id:"rc19",q:"Who was Malintzin (La Malinche)?",a:"Indigenous woman given to Cortés in 1519. Fluent in Nahuatl and Mayan, she became Cortés's interpreter and advisor. Her translation ability was crucial — it allowed Cortés to communicate with Aztec emissaries and allies like the Tlaxcalans.",cat:"rc_mexico"},
+  {id:"rc20",q:"Why did the Tlaxcalans ally with Cortés?",a:"The Aztecs maintained perpetual 'flower wars' with the Tlaxcalans as a source of human sacrifices. This situation was so hateful that when Cortés arrived, the Tlaxcalans became his most loyal native allies, providing crucial military support.",cat:"rc_mexico"},
+  {id:"rc21",q:"How did Moctezuma die?",a:"Disputed. Cortés claims the Mexicans killed Moctezuma with arrows, stones, and a sword while he was on a roof speaking to his people. Bernal Díaz and other soldiers say he died from a stone thrown by the Mexicans. Both versions agree he died during conflict.",cat:"rc_mexico"},
+  {id:"rc22",q:"What was 'The Broken Spears'?",a:"A unique historical source providing the indigenous (Aztec) perspective of the Conquest. Unlike most sources from the conquerors' side, it presents the most dramatic moments from the perspective of the conquered, using codices and indigenous manuscripts.",cat:"rc_mexico"},
+  {id:"rc23",q:"Who was Francisco Pizarro?",a:"Ambitious, illiterate soldier of fortune who led the conquest of the Inca Empire. From Extremadura, Spain (poverty drove men to seek wealth abroad). His unequal distribution of rewards strained his partnership with Diego de Almagro.",cat:"rc_peru"},
+  {id:"rc24",q:"How did Peru's internal situation favour the Spanish?",a:"The Inca Empire was weakened by civil war between brothers Atahualpa and Huáscar. This divided loyalties, depleted resources, and left the empire fragmented. Smallpox had also ravaged the population before Pizarro's arrival.",cat:"rc_peru"},
+  {id:"rc25",q:"What happened at Cajamarca (1532)?",a:"Pizarro ambushed and captured Inca Emperor Atahualpa. Fray Valverde demanded acceptance of Christianity; Atahualpa rejected it by discarding the Bible. The Spanish attacked with cannons, cavalry, and steel, slaughtering thousands. Atahualpa was taken hostage, ransomed with gold, then executed.",cat:"rc_peru"},
+  {id:"rc26",q:"What were the 'Post-Conquest Troubles' in Peru?",a:"Manco (puppet ruler) rebelled in 1536. Feud between Pizarro and Almagro factions — Almagro strangled 1538, Pizarro assassinated 1541. Gonzalo Pizarro revolted against the New Laws, killed the Viceroy 1546. Defeated by Gasca 1548. Shows conquistadors were driven by personal gain, not loyalty.",cat:"rc_peru"},
+  {id:"rc27",q:"How did 'a handful of Spaniards win two Empires'?",a:"1) Superior military technology (steel, guns, horses). 2) Indigenous alliances (Tlaxcalans, rival Inca factions). 3) Disease — smallpox devastated populations. 4) Internal divisions and centralized rule (capturing the leader paralyzed the empire). 5) Religious/cultural misunderstandings exploited.",cat:"rc_peru"},
+  {id:"rc28",q:"What was the Encomienda system?",a:"Spanish settlers (encomenderos) were granted authority over indigenous people, requiring labour, tribute, or goods in exchange for supposed protection and Christian instruction. Not slavery in the legal sense but often exploitative in practice.",cat:"rc_colonial"},
+  {id:"rc29",q:"Who was Bartolomé de Las Casas?",a:"Former encomendero who repented and became a friar. 'Protector of the Indians.' Advocated for indigenous rights and peaceful conversion. His 'Short Account of the Destruction of the Indies' (1542) described colonial atrocities. Influenced the New Laws of 1542-43.",cat:"rc_colonial"},
+  {id:"rc30",q:"What were the New Laws (1542-43)?",a:"Enacted under Charles V, influenced by Las Casas. Encomiendas couldn't be inherited. Indigenous enslavement banned. Labour burdens reduced. Sparked fierce opposition — Gonzalo Pizarro led rebellion in Peru (1544-48), forcing the Crown to weaken enforcement.",cat:"rc_colonial"},
+  {id:"rc31",q:"What was the Valladolid Debate (1550-51)?",a:"Las Casas vs Sepúlveda over morality of conquest. Sepúlveda: indigenous peoples were 'natural slaves,' justifying forced conversion. Las Casas: they were rational humans with inherent rights. Sepúlveda backed by colonial elites; Las Casas by Dominican/Franciscan missionaries and the Crown.",cat:"rc_colonial"},
+  {id:"rc32",q:"What was the Mita system?",a:"Colonial labour system in the Andes requiring indigenous communities to provide workers for mines, plantations, or public projects. Intended as rotational labour but frequently led to exploitation, forced displacement, and significant hardship.",cat:"rc_colonial"},
+  {id:"rc33",q:"What was the Black Legend?",a:"A narrative portraying Spain as uniquely cruel. Fueled by Las Casas's writings, translated and spread by Spain's rivals (England, Netherlands). Used vivid accounts of atrocities (exaggerated) to depict Spaniards as barbaric, boosting anti-Spanish propaganda.",cat:"rc_colonial"},
+  {id:"rc34",q:"How is the Conquest connected to the Reconquest?",a:"The Reconquista's narrow focus on domination and exclusion became the template. The Moors bred a warrior culture with contempt for labour. Cortés compared indigenous architecture to Granada. Poverty-stricken Extremadurans sought wealth abroad. The trinity of motives: God, Gold, and Glory.",cat:"rc_colonial"},
+  {id:"rc35",q:"What was the Church's role in the colonies?",a:"Initially, elite friars driven by missionary zeal arrived. Some (Vasco de Quiroga, Las Casas) envisioned utopian communities. But reformist attitudes clashed with exploitative encomenderos. The patronato gave Spanish kings absolute authority over clergy. Church power rivalled royalty under Habsburgs.",cat:"rc_colonial"},
+
+  // ═══ ADDITIONAL COLD WAR CARDS ═══
+  {id:"cw39",q:"What was the impact of the Marshall Plan on Italy?",a:"The Christian Democrats, led by De Gasperi, faced off against the communist-led left in the 1948 elections. A massive US campaign — including letters from Italian-Americans and covert CIA operations — supported anti-communist candidates. The Christian Democrats won decisively, keeping Italy in the Western bloc.",cat:"cw_origins"},
+  {id:"cw40",q:"What were Soviet negotiation tactics?",a:"The Soviets used stubborn tactics to obtain as much information as possible, creating exhaustion and frustration. Then Stalin would come in and resolve the situation with a friendly smile, appearing reasonable by comparison.",cat:"cw_origins"},
+  {id:"cw41",q:"What happened in Iran during the early Cold War?",a:"During WWII, Soviet and British troops occupied Iran to protect oil supplies. After the war, Stalin refused to leave when occupation was due to end. This created international pressure, and Stalin eventually withdrew, but Truman suspected Stalin was aiming for world domination.",cat:"cw_origins"},
+  {id:"cw42",q:"What were the different views on Germany's future?",a:"Soviet Perspective: wanted to keep Germany weak to prevent it becoming a threat again. US Perspective: believed a strong Germany was essential for Western Europe's recovery and stability. This fundamental disagreement shaped the division of Germany.",cat:"cw_origins"},
+  {id:"cw43",q:"What was COMECON?",a:"The Council for Mutual Economic Assistance, established by the Soviets as a counter to the Marshall Plan. It promoted economic integration and cooperation among communist countries, providing economic support to Eastern bloc states under Soviet control.",cat:"cw_origins"},
+  {id:"cw44",q:"What did Charles 'Chip' Bohlen claim about the Korean War?",a:"He claimed 'It was the Korean War and not World War Two that made us a world military-political power.' While debatable (the US was already a superpower after the atomic bomb), the Korean War did massively increase US military funding and global military presence.",cat:"cw_containment"},
+  {id:"cw45",q:"How did the Vietnam War relieve pressure elsewhere in Asia?",a:"Although the US failed to contain communism in Vietnam, the war relieved Chinese pressure from Malaysia, Thailand, and Singapore, allowing those countries to remain non-communist. This is often overlooked when evaluating the war's strategic impact.",cat:"cw_containment"},
+  {id:"cw46",q:"What was the American-Japanese Security Treaty (1952)?",a:"Left Japan under the protection of the USA after the occupation ended. This solidified Japan as an opposing power to China and effectively made Japan the protector of capitalism in Asia, without Japan needing its own large military.",cat:"cw_containment"},
+  {id:"cw47",q:"What was the Domino Theory?",a:"The theory that if one country fell to communism, neighbouring countries would follow like dominoes. Used to justify US intervention in Vietnam. It came true when Laos and Cambodia fell to communism in 1975 after the US withdrew from Vietnam.",cat:"cw_containment"},
+  {id:"cw48",q:"What was Kennedy's image before the Cuban Missile Crisis?",a:"He was seen as unpredictable but appeared weak against communism after the Bay of Pigs failure. Khrushchev saw this weakness as an opportunity to increase Soviet pressure, contributing to the decision to place missiles in Cuba.",cat:"cw_crises"},
+  {id:"cw49",q:"How did the Cuban Missile Crisis affect China-USSR relations?",a:"Chinese relations with the USSR continued to deteriorate. China saw the USSR's unwillingness to challenge the USA as proof that they were no longer a revolutionary state. This deepened the Sino-Soviet split.",cat:"cw_crises"},
+  {id:"cw50",q:"What was the Geneva Conference and Paris Conference about?",a:"Conferences during the Berlin Crisis attempting to resolve the German question. There were no conclusive outcomes in either conference, showing the deadlock between East and West over Berlin's future.",cat:"cw_crises"},
+  {id:"cw51",q:"What was SDI (Strategic Defence Initiative)?",a:"Reagan's 1983 'Star Wars' program to develop space-based missile defence. It undermined the concept of MAD (Mutually Assured Destruction) and left the USSR vulnerable. The Soviets could not afford to compete, forcing them to the negotiating table.",cat:"cw_end"},
+  {id:"cw52",q:"What was the Sinatra Doctrine (1988)?",a:"Gorbachev's abandonment of the Brezhnev Doctrine — named after Frank Sinatra's 'My Way.' Eastern European countries could now choose their own political path. Gorbachev would not use force against protesting satellite states, enabling the peaceful collapse of the Soviet empire.",cat:"cw_end"},
+  {id:"cw53",q:"What were the key summits between Reagan and Gorbachev?",a:"Between 1985-1988, multiple summits were held. Both men made mistakes but were determined to reach a conclusion. They came to peaceful resolutions, including the INF Treaty (1987). Both were prepared to reverse their previous positions to make compromises.",cat:"cw_end"},
+  {id:"cw54",q:"What criticism did satellite states have of the Soviet system?",a:"They criticized the inefficiency in terms of quality and quantity of state-controlled industries. People on borders to the Western and capitalist worlds were particularly critical of their own living conditions compared to what they could see across the border.",cat:"cw_end"},
+
+  // ═══ ADDITIONAL MUSSOLINI CARDS ═══
+  {id:"mu15",q:"How did Mussolini strengthen power through coercion (1922-26)?",a:"Used Fascist squads for violence against opponents — attacks, murders, destruction of socialist offices. He balanced legal parliamentary work to gain elite support with illegal force to keep radical Fascists loyal, avoiding loss of key allies.",cat:"au_muss_rise"},
+  {id:"mu16",q:"What did Professor Christopher Duggan say about Fascism?",a:"Duggan stated the regime focused on Mussolini personally, not a clear ideology. It mixed force, propaganda, and opportunism, lacking a true totalitarian structure despite its claims. Fascism was more personality-cult than systematic ideology.",cat:"au_muss_power"},
+  {id:"mu17",q:"What was the Fascist Grand Council?",a:"Created in 1923 as the top body of the Fascist Party. It advised on policy and appointments, aiming to merge party and state. In practice, it mainly rubber-stamped Mussolini's decisions rather than exercising independent power.",cat:"au_muss_power"},
+  {id:"mu18",q:"What was the 'Battle for Grain'?",a:"Mussolini's campaign for grain self-sufficiency. Propaganda boasted success, but it actually led to higher costs and neglect of other crops. A key example of how Fascist propaganda exaggerated achievements while hiding economic failures.",cat:"au_muss_power"},
+  {id:"mu19",q:"What was the IRI (Institute for Industrial Reconstruction)?",a:"Nationalized key industries after the 1930s depression, stabilising banking and fostering growth in heavy industry. Steel production rose by 50%. One of the more successful Fascist economic policies, though it contradicted free-market ideology.",cat:"au_muss_power"},
+  {id:"mu20",q:"What was the Dopolavoro?",a:"A Fascist leisure organization for workers that expanded welfare and provided social activities. It was one of the few genuinely popular Fascist institutions, offering recreation and cultural events to ordinary Italians.",cat:"au_muss_power"},
+  {id:"mu21",q:"How did Mussolini use 'battles' in propaganda?",a:"He called his economic policies 'battles' (Battle for Grain, Battle for Births, Battle for the Lira) to inspire national unity and heroism, framing economic efforts as urgent struggles. This boosted propaganda and portrayed him as a strong wartime leader.",cat:"au_muss_power"},
+  {id:"mu22",q:"What was the 'Battle for Births'?",a:"Campaign to boost Italy's population through tax breaks for large families and penalties for bachelors. Part of Mussolini's vision of a militarily powerful Italy. Results were limited — birth rates did not increase significantly.",cat:"au_muss_power"},
+  {id:"mu23",q:"How did Italy seek great power status through colonialism?",a:"Italy gained Eritrea (1885), Somalia, and Libya (1911). The defeat at Adowa in 1896 against Ethiopia was deeply humiliating. Italy made agreements with France (1900, 1902) for minor North African expansion but remained the weakest great power.",cat:"au_muss_rise"},
+
+  // ═══ ADDITIONAL PERÓN CARDS ═══
+  {id:"pe12",q:"What was the 'Infamous Decade' in Argentina?",a:"Beginning with a 1930 coup during the Great Depression, Argentina experienced corrupt autocratic rule with sharp declines in commodity prices and strained imports. People lost faith in the political system. Industrial development began to reduce import dependency.",cat:"au_peron_rise"},
+  {id:"pe13",q:"What was the Argentine oligarchy like before Perón?",a:"An educated, progressive elite tied to Social Darwinism, Positivism, and British capital. Between 1872-1895, cultivated agricultural land expanded 15-fold. Buenos Aires became the 'Paris of South America.' But 2-3% of the population owned 95% of the land by 1500.",cat:"au_peron_rise"},
+  {id:"pe14",q:"What were conditions like for Argentina's lower class before Perón?",a:"European immigrants lived in crowded conventillos near Plaza de Mayo — cheap tenements housing up to 350 people in cramped, poorly ventilated rooms. They worked long hours as dockworkers and artisans, sharing small rooms to afford low rents.",cat:"au_peron_rise"},
+  {id:"pe15",q:"What was Perón's 1949 Constitution?",a:"Allowed presidential re-election, nationalized public services and energy sources, enabled state intervention in trade, and emphasized social rights and state-protected family institutions. It centralized power further under Perón.",cat:"au_peron_power"},
+  {id:"pe16",q:"How did Perón control the press?",a:"Forced 110 publications to close (1943-46), conducted fake inspections, disrupted paper supplies. In 1951, shut down the prestigious La Prensa, used official radio to counter its editorials, and reopened the paper under pro-Perón direction. Established Secretariat of Information.",cat:"au_peron_power"},
+  {id:"pe17",q:"What were Perón's social policies?",a:"Expanded labour rights (paid vacations, severance pay). Created universal pensions, health insurance, accident compensation. Raised minimum wages with annual bonuses. Built low-cost homes through the Eva Perón Foundation. Established free hospitals and clinics for the working class.",cat:"au_peron_power"},
+  {id:"pe18",q:"How decisive was Perón's 1946 election victory?",a:"His coalition won all national senators except two, a two-thirds majority in the Chamber of Deputies, and governorships with legislative majorities in every province but Corrientes. Despite this mandate, he still lacked full armed forces endorsement.",cat:"au_peron_power"},
+  {id:"pe19",q:"How did Perón use education for indoctrination?",a:"A committee mandated new textbooks conveying Peronist messages through nationalist rhetoric, with no criticism allowed. The ministry required aligned teacher's guides. Teachers were required to transmit Peronist doctrine to students.",cat:"au_peron_power"},
+  {id:"pe20",q:"What was La razón de mi vida?",a:"Written by Eva Perón and published in 1951. An autobiographical manifesto glorifying her rise from poverty, justifying Peronism as social justice, and defining women's role as loyal supporters of Perón within the home. Required reading in schools.",cat:"au_peron_power"},
+
+  // ═══ ADDITIONAL CASTRO CARDS ═══
+  {id:"ca14",q:"What was the role of women in the Cuban Revolution?",a:"Women like Vilma Espín, Haydée Santamaría, and Celia Sánchez played major roles in urban coordination, arms smuggling, propaganda, and founding women's units like the Mariana Grajales Brigade. The movement promised gender equality and social justice.",cat:"au_castro_rise"},
+  {id:"ca15",q:"What was Radio Rebelde?",a:"The rebel radio station operated during the guerrilla war from the Sierra Maestra. After the revolution, radio and TV made the revolution a constant presence in homes, becoming a key propaganda tool for Castro's regime.",cat:"au_castro_power"},
+  {id:"ca16",q:"What was the Padilla Affair (1971)?",a:"Poet Heberto Padilla was arrested and tortured, then forced to make a public confession for writing critical poetry. This led to the 'grey years' where artists were afraid to create anything potentially counter-revolutionary. International intellectuals condemned Cuba.",cat:"au_castro_power"},
+  {id:"ca17",q:"What were UMAP camps?",a:"Units to Aid Military Production (1965-68): forced labour camps for ~25,000 people including dissidents, homosexuals, religious objectors, and youth imitating US culture. One of the most repressive aspects of Castro's regime.",cat:"au_castro_power"},
+  {id:"ca18",q:"What was Cuba's literacy campaign (1961)?",a:"170,000 teachers (brigadistas) were trained and deployed to rural areas. Illiteracy dropped from ~23% to 4%. More schools were built in 1959-62 than in the previous 58 years. Education served both literacy AND revolutionary indoctrination.",cat:"au_castro_power"},
+  {id:"ca19",q:"What was Che Guevara's vision for Cuba?",a:"He believed labour should be a social duty based on revolutionary consciousness, not material need. The goal was to create a 'new man' who works for the collective good. In practice, moral incentives led to absenteeism and low productivity — the approach largely failed.",cat:"au_castro_power"},
+  {id:"ca20",q:"What was the Mariel Boatlift (1980)?",a:"Over 125,000 Cubans left via the port of Mariel. Castro released prisoners and mentally ill people onto the boats, calling all emigrants 'scum.' Used emigration as a safety valve to release social pressure rather than resorting to mass violence.",cat:"au_castro_power"},
+  {id:"ca21",q:"What was Castro's 'Words to the Intellectuals' speech?",a:"Castro declared: 'Within the Revolution, everything; against the Revolution, nothing.' Artists must serve the revolution; art must deliver clear messages to the masses. This established the framework for ongoing censorship of Cuban arts and culture.",cat:"au_castro_power"},
+  {id:"ca22",q:"How were Afro-Cubans treated under Castro?",a:"The revolution claimed to eradicate racial discrimination. Living standards for the poor improved. However, critics argue deeper inequality persisted — very few non-whites held positions of power within the PCC or government.",cat:"au_castro_power"},
+  {id:"ca23",q:"What was the Platt Amendment?",a:"A 1901 US law granting the right to intervene in Cuba's internal affairs, finances, and foreign relations, while securing the Guantánamo naval base. It imposed semi-colonial status on Cuba and fueled anti-American nationalism until its repeal in 1934.",cat:"au_castro_rise"},
+  {id:"ca24",q:"How did the mob rule Havana before the revolution?",a:"From the 1940s-1950s, American organized crime (especially Meyer Lansky) ran Havana's casinos and nightclubs under Batista's protection. Cuba became a 'Latin Las Vegas.' This corruption and foreign exploitation fueled revolutionary sentiment.",cat:"au_castro_rise"},
+
+  // ═══ ADDITIONAL RECONQUEST & CONQUEST CARDS ═══
+  {id:"rc36",q:"What was the Ottoman Empire's impact on European exploration?",a:"The Ottoman capture of Constantinople gave them control over key trade routes between Europe and Asia. Ottoman taxes and restrictions forced countries like Spain to seek alternative routes, directly leading to Columbus's 1492 voyage.",cat:"rc_reconquest"},
+  {id:"rc37",q:"What happened during the Second Rebellion of the Alpujarras?",a:"In 1567, Philip II banned Arabic, Islamic religion, dress, and customs. This triggered rebellion. Don John razed Galera — salt was sprinkled over the town and 2,500 people were slaughtered, including 400 women and children.",cat:"rc_expulsions"},
+  {id:"rc38",q:"Who was Bernal Díaz del Castillo?",a:"A Spanish conquistador who wrote a firsthand account of the conquest of Mexico. His narrative is raw, detailed, and filled with sensory descriptions. Unlike Cortés's formal letters, Díaz wrote from a common soldier's perspective with more honesty about events.",cat:"rc_mexico"},
+  {id:"rc39",q:"What were Aztec codices?",a:"Manuscripts created by the Aztecs, Mayas, and early colonial indigenous people. Most were burned by Spanish conquistadors and churchmen. More than 40 manuscripts are known to exist today, making indigenous perspectives of the conquest extremely rare.",cat:"rc_mexico"},
+  {id:"rc40",q:"What omens foretold the Spanish arrival to the Aztecs?",a:"A pillar of fire in the sky, the Temple of Huitzilopochtli struck by lightning, Lake Texcoco boiling, a woman's voice wailing. These were interpreted as signs of impending catastrophe and that their protective deities were abandoning them.",cat:"rc_mexico"},
+  {id:"rc41",q:"What was the Night of Sorrows (Noche Triste)?",a:"In 1520, after the Spanish massacred Aztec nobles during a festival, a revolt drove Cortés out of Tenochtitlán via the Tacuba Causeway. Many Spaniards died. Cortés returned in 1521 with Tlaxcalan allies and laid siege until the city fell on August 13, 1521.",cat:"rc_mexico"},
+  {id:"rc42",q:"What was the role of disease in the conquest?",a:"Smallpox devastated indigenous populations before and during the conquests. In Peru, it ravaged the Inca before Pizarro arrived, killing Emperor Huayna Capac and triggering the civil war between Atahualpa and Huáscar that the Spanish exploited.",cat:"rc_peru"},
+  {id:"rc43",q:"What were the characteristics of the Inca civilization?",a:"The largest pre-Columbian American empire (Tawantinsuyu). Over 25,000 miles of roads. No writing — used quipus for records. No money — relied on a labour tax. Mastered high-altitude farming with terraces. The Sapa Inca was a divine ruler descended from the sun god Inti.",cat:"rc_peru"},
+  {id:"rc44",q:"How did Fray Valverde justify the attack at Cajamarca?",a:"He delivered a religious ultimatum demanding Atahualpa accept Christianity and submit to Spanish rule, presenting a Bible. When Atahualpa rejected it by discarding the Bible, Valverde signaled Pizarro to attack — providing a 'legal' and moral pretext for violence.",cat:"rc_peru"},
+  {id:"rc45",q:"What was Louise M. Burkhart's observation about Aztec Christianity?",a:"She said the Aztecs 'were able to become just Christians enough to get by in the colonial setting without compromising their basic ideological and moral orientation.' The Day of the Dead — merging Aztec death rituals with All Saints' Day — exemplifies this syncretism.",cat:"rc_colonial"},
+  {id:"rc46",q:"What is Latin American Liberation Theology?",a:"A 20th-century theological movement emphasizing social justice and advocating for the poor by interpreting Christianity through liberation from injustice. Las Casas is seen as a historical precursor — theologians like Gutiérrez cite him as an early defender of the oppressed.",cat:"rc_colonial"},
+  {id:"rc47",q:"What did Carlos Fuentes mean by 'America was not discovered, it was invented'?",a:"The Spanish didn't merely uncover a static land — they actively shaped it through imagination, violence, and imposition. They dismantled empires (Aztecs, Incas) and rebuilt them as colonial domains like New Spain and Peru, creating something entirely new.",cat:"rc_colonial"},
+  {id:"rc48",q:"How did the Crown treat the conquistadors long-term?",a:"Initially rewarded with encomiendas and governorships. But the Crown then curbed their autonomy through the Council of the Indies (1524) and viceroys. Many rank-and-file conquistadors received little. The Crown feared conquistadors becoming rival powers.",cat:"rc_colonial"}
+];
+
+// ═══ EXAM QUESTIONS ═══
+const EXAM_QUESTIONS=[
+  {q:"To what extent was the US policy of containment in Asia successful?",topic:"coldWar",hints:"Consider Korea (partial success), Japan (success), Taiwan (success via Formosa Resolution), Vietnam (failure — Domino Theory realized). Argue 3+1 or 2+2 with transition words."},
+  {q:"Discuss the causes of the Cuban Missile Crisis.",topic:"coldWar",hints:"Three main causes: 1) Cuban Revolution 1959, 2) Bay of Pigs failure 1961, 3) Discovery of Soviet missile sites 1962. Link to broader Cold War tensions."},
+  {q:"Compare the Berlin Crisis and the Cuban Missile Crisis. Which was more dangerous?",topic:"coldWar",hints:"Berlin: propaganda-focused, economic pressure, Wall built. Cuba: naval blockade, nuclear brinkmanship, closest to direct conflict. Consider long-term impacts."},
+  {q:"Evaluate the roles of Gorbachev and Reagan in ending the Cold War.",topic:"coldWar",hints:"Compare: both saw nuclear dangers, worked through summits. Contrast: Reagan's hardline spending vs Gorbachev's conciliatory approach. Gorbachev's reforms (Perestroika/Glasnost) had larger impact."},
+  {q:"The conditions in which Mussolini rose to power were mainly determined by economic factors. To what extent do you agree?",topic:"authStates",hints:"FOR: post-WWI economic crisis, unemployment, Red Biennium. AGAINST: political factors (weak parliament, transformism), propaganda, use of violence, March on Rome."},
+  {q:"Compare and contrast the rise to power of Mussolini and Perón.",topic:"authStates",hints:"Both: exploited economic crises, used populist rhetoric, military connections. Mussolini: violence/squads, March on Rome, anti-communist. Perón: labour reforms, working-class base, 17 October demonstration."},
+  {q:"The conditions in which Juan Perón rose to power were mainly determined by economic factors. To what extent do you agree?",topic:"authStates",hints:"FOR: Great Depression aftermath, WWII economic instability, pro-labour reforms. AGAINST: political dynamics (GOU), military support, charismatic leadership, Mussolini influence."},
+  {q:"Evaluate the domestic policies of one authoritarian state leader you have studied.",topic:"authStates",hints:"For Castro: land reform, literacy campaign, nationalization, healthcare, education. Balance achievements (literacy 23%→4%) against repression (CDRs, UMAP, press censorship, show trials)."},
+  {q:"To what extent did Castro achieve full authoritarian rule?",topic:"authStates",hints:"FOR: one-party state, CDR surveillance, UMAP camps, media control, cult of personality. AGAINST: not mass terror like Stalin, emigration as safety valve, genuine social achievements, pragmatic adaptations."},
+  {q:"How true was 'La Convivencia'? Argue for and against.",topic:"reconquest",hints:"FOR: relative tolerance by era's standards, Jews/Christians could worship and earn a living, cultural flourishing. AGAINST: second-class citizenship, special taxes, oppression increased over time, 1066 massacre."},
+  {q:"How is the Conquest of the New World a continuation of the Reconquest in Iberia?",topic:"reconquest",hints:"Warrior culture, contempt for labour, God/Gold/Glory trinity, comparison of indigenous architecture to Granada, Extremaduran poverty driving conquest, religious justification pattern."},
+  {q:"How did a 'handful of Spaniards' conquer two empires?",topic:"reconquest",hints:"Five factors: superior military technology, indigenous alliances, disease (smallpox), internal divisions/centralized rule, religious/cultural misunderstandings. All were needed — remove one and conquest may have failed."},
+  {q:"Evaluate the role of Bartolomé de Las Casas in colonial history.",topic:"reconquest",hints:"Former encomendero turned reformer. Influenced New Laws 1542-43. Valladolid Debate vs Sepúlveda. 'Short Account' described atrocities but also fueled Black Legend. Limited success — laws weakly enforced."}
+];
+
+// ═══ STORIES — narrative timelines per subtopic ═══
+const STORIES={
+cw_origins:{
+  title:"The Birth of the Cold War (1945–1947)",
+  events:[
+    {year:"1945",text:"World War II ended, but instead of peace, the world entered a new kind of conflict. The Soviet Union had paid an enormous price for victory — 27 million dead, nearly 70,000 villages destroyed, everything from Moscow to the borders in ruins. Stalin's 5-year plan lay shattered. For the Soviets, security now meant one thing: a buffer zone of friendly states in Eastern Europe, no matter the cost to those living there."},
+    {year:"1945–46",text:"Across Eastern Europe, the Soviet method was brutally efficient. Leaders of parties that opposed communist rule simply disappeared. Anyone suspected of disloyalty was arrested. The entire nation of Poland was physically shifted westward — Soviets seized Polish homes in the east, and in return Poles seized German homes in the west. Twelve million Germans were expelled across Europe. In the Soviet zone of Germany, the Red Army looted homes and hunted down women, even as Stalin ordered soldiers to feed the Berliners."},
+    {year:"Feb 1946",text:"George Kennan, an American diplomat stationed in Moscow, sent his famous Long Telegram. His message was stark: the Soviet Union intended to expand across the world and must be contained. The telegram electrified Washington and became the intellectual foundation for decades of American foreign policy."},
+    {year:"Mar 1946",text:"Churchill delivered his Iron Curtain speech in Fulton, Missouri, warning that a Soviet 'iron curtain' had descended across Europe. It was initially poorly received in America, but it crystallized the Western view of Soviet ambitions. Stalin responded by comparing Churchill to Hitler, calling his speech a call to arms. The ideological battle lines were drawn."},
+    {year:"Early 1946",text:"In Iran, a small crisis revealed the shape of things to come. During the war, Soviet and British troops had jointly occupied Iran to protect oil supplies. When the war ended, Britain withdrew — but Stalin refused to leave. International pressure eventually forced a Soviet withdrawal, but for Truman it confirmed a disturbing pattern. He began to suspect Stalin was aiming for world domination."},
+    {year:"Mar 1947",text:"Britain, exhausted and nearly bankrupt from the war, informed Washington it could no longer afford its commitments in the Mediterranean. Greece and Turkey were at risk of falling to communism. Truman responded with what became the Truman Doctrine — a commitment to contain communism anywhere in the world. Congress approved $400 million in aid. It was the moment the US formally accepted its role as global policeman, and the definitive ideological split between democracy and communism was complete."},
+    {year:"Jun 1947",text:"The Marshall Plan was announced — a massive $20 billion economic aid program to rebuild Western Europe. The logic was simple: hungry, unemployed people turn to communism, so feed them and give them jobs. Seventeen countries participated. Stalin immediately saw it as an American attempt to undermine Soviet influence and ordered Eastern bloc countries to refuse. Czechoslovakia initially agreed to join but was forced to withdraw; by 1948, communists had seized its government entirely. The Soviets established COMECON as their own counter, but it never matched American generosity."},
+    {year:"1947–48",text:"Country by country, the Marshall Plan reshaped Europe. France received $2.7 billion after cracking down on communist influence. Italy saw a massive CIA-backed campaign to defeat communists in the 1948 elections — letters from Italian-Americans, covert funding, and propaganda helped the Christian Democrats win decisively. Yugoslavia's Tito, who had broken with Stalin, accepted over $150 million from the US. Greece received $700 million to rebuild after Nazi occupation and civil war. Everywhere, American money was buying loyalty and stability — and pushing communism back behind the iron curtain."}
+  ]
+},
+cw_containment:{
+  title:"Containment Goes Global: Asia (1950–1975)",
+  events:[
+    {year:"1950",text:"The Cold War had been a European affair — until Korea. When North Korean forces crossed the 38th parallel and invaded the South, Truman faced a choice that would redefine American power. He created NSC-68, a national security document that massively increased the military budget and led to SEATO, the Asian equivalent of NATO. As Truman himself put it, 'Korea is the Greece of the Far East.' Just as Greece had to be saved in Europe, Korea had to be saved in Asia."},
+    {year:"1950–53",text:"The Korean War became the first armed conflict between capitalist and communist forces, and one of the first instances of the United Nations leading a military coalition. It globalized the Cold War beyond Europe. The cost was staggering — millions of casualties on all sides. As Charles 'Chip' Bohlen later claimed, 'It was the Korean War and not World War Two that made us a world military-political power.' The result was ambiguous: South Korea was saved, but the peninsula remained divided, and a new communist power — China — had emerged on the world stage."},
+    {year:"1952",text:"The American-Japanese Security Treaty formalized what had been true since 1945: Japan was under American protection. Having occupied Japan since the war's end, the US had rebuilt it as a thriving capitalist democracy. Japan was never really at risk of falling to communism, and its booming economy made it the perfect counterweight to China — effectively the protector of capitalism in Asia."},
+    {year:"1953–54",text:"After the Chinese bombardment of Taiwan, the US passed the Formosa Resolution, authorizing any military action necessary to defend the island. Eisenhower went further, threatening nuclear weapons against China. It worked — Taiwan remained non-communist. The containment strategy of making the cost of expansion unbearable was proving effective where it could be backed by overwhelming force."},
+    {year:"1964–73",text:"Vietnam would prove that containment had limits. The Gulf of Tonkin Resolution in 1964 gave the president virtually unlimited military authority. Operation Rolling Thunder unleashed devastating bombing campaigns — 30,000 civilian casualties. But Vietnam was the first uncensored televised war, and the images that reached American living rooms sparked massive domestic protests. The US was fighting not just the Viet Cong but its own public opinion."},
+    {year:"1975",text:"America lost the Vietnam War. Worse, the Domino Theory — the fear that one country's fall would trigger its neighbors — came true. Laos and Cambodia fell to communism in 1975. Yet there was a bitter silver lining: the war had relieved Chinese pressure from Malaysia, Thailand, and Singapore, which all remained non-communist. Containment in Asia was a story of partial success and spectacular failure — Korea saved, Japan thriving, Taiwan defended, but Vietnam lost and dominoes falling."}
+  ]
+},
+cw_crises:{
+  title:"On the Brink: Berlin and Cuba",
+  events:[
+    {year:"1958",text:"Berlin was a wound that wouldn't heal. The city sat deep inside communist East Germany, split into Western and Eastern zones. A brain drain was bleeding East Germany dry — skilled workers crossed freely into West Berlin for higher pay and better lives. West Berliners, meanwhile, crossed east to buy goods at cheap communist prices, creating shortages for actual East Berliners. Over 300,000 people had fled to the West. For Khrushchev, this was unsustainable."},
+    {year:"1958–59",text:"Khrushchev demanded the withdrawal of Western troops from Berlin and proposed making it a 'Free City.' He was also worried about nuclear weapons — West Germany (FRG) was in NATO and had been equipped with tactical nuclear weapons. The Geneva Conference and Paris Conference both attempted to resolve the crisis, but neither produced any conclusive outcome. The superpowers were at a deadlock."},
+    {year:"Aug 1961",text:"Khrushchev acted. Overnight, the Berlin Wall went up — a physical barrier that would divide families, friends, and a city for 28 years. The wall was an admission of failure: the communist system couldn't compete with capitalism if people were free to choose. But it achieved its goal. The existence of East Germany was assured, and the Western powers, by tolerating the wall, implicitly recognized the GDR. German-American relations suffered, and Berlin increasingly relied on France. The Wall became the defining symbol of the Cold War — a propaganda loss for communism that highlighted the weakness of the entire Soviet bloc."},
+    {year:"1959",text:"Meanwhile, 90 miles from Florida, Fidel Castro had overthrown the US-backed dictator Batista and established a communist-aligned regime in Cuba. This was no distant satellite state — this was in America's backyard, a direct challenge to US influence in the Western hemisphere."},
+    {year:"Apr 1961",text:"Kennedy inherited a CIA plan to invade Cuba using trained Cuban exiles. He modified it — fatally removing US air support — and the Bay of Pigs invasion was a humiliating disaster. The failure had three consequences: it strengthened Castro, who now had proof of American aggression to justify his crackdowns; it made Kennedy look weak, particularly to Khrushchev; and it pushed Cuba deeper into the Soviet embrace."},
+    {year:"Oct 1962",text:"American U-2 spy planes photographed Soviet nuclear missile sites being constructed in Cuba. The missiles could reach most major US cities within minutes. Kennedy's response was a naval blockade — he called it a 'quarantine' to avoid the legal implications of an act of war. For thirteen days, the world stood on the brink of nuclear annihilation. Soviet ships carrying more missiles sailed toward the blockade line. The Cuban Missile Crisis was the closest humanity has ever come to nuclear war."},
+    {year:"Late Oct 1962",text:"A deal was struck. The Soviets would remove their missiles from Cuba; the US would quietly remove its missiles from Turkey and promise not to invade Cuba. The orthodox view credits Kennedy as calm and decisive; the revisionist view calls him reckless and self-interested. Khrushchev was humiliated. China's relations with the USSR deteriorated further — they saw Soviet retreat as proof the USSR was no longer truly revolutionary. But the crisis bore fruit: a hotline was established between Washington and Moscow, and the Limited Test Ban Treaty and Nuclear Non-Proliferation Treaty soon followed. The world was more secure — but the arms race escalated."}
+  ]
+},
+cw_policy:{
+  title:"How America Fought the Cold War",
+  events:[
+    {year:"1947–53",text:"Under Truman, the strategy was straightforward: containment. The US would assist any force resisting communism, use military power to protect vulnerable areas, and set up alliances to shield countries from Soviet influence. The Truman Doctrine, Marshall Plan, NATO, and the Korean War intervention were all expressions of this policy. NSC-68 provided the intellectual framework, calling for massive military spending to contain Soviet expansion."},
+    {year:"1953–61",text:"Eisenhower inherited containment but transformed it. His 'New Look' policy was built on a key insight: the US couldn't afford to fight limited wars everywhere. Instead, it would rely on the threat of nuclear weapons — what became known as massive retaliation. The idea was simple: make the Soviets understand that any aggression would be met with overwhelming nuclear force, creating mutually assured destruction (MAD). This was cheaper than maintaining huge conventional forces, and it kept the peace through terror."},
+    {year:"1953–61",text:"Eisenhower's Secretary of State, John Foster Dulles, advocated 'brinkmanship' — advancing to the very edge of war without crossing it, using nuclear threats to force adversaries to back down. He also proposed 'roll-back' — actually liberating communist countries in Europe through war — though this was never carried out. The CIA became Eisenhower's secret weapon, conducting covert operations to overthrow governments deemed too left-wing, including in Iran and Guatemala. SEATO was established to encircle the Soviet Union in Asia."},
+    {year:"Comparison",text:"Both Truman and Eisenhower shared the same goal: stop communism from spreading. Both assisted anti-communist forces and used military power defensively. But where Truman prepared for potential direct confrontation (NSC-68), Eisenhower's New Look specifically avoided it, betting everything on nuclear deterrence and covert operations. Eisenhower expected that if denied opportunities to expand, the Soviet system would eventually collapse on its own — a prediction that would take another 30 years to come true."}
+  ]
+},
+cw_end:{
+  title:"The Cold War Ends (1985–1991)",
+  events:[
+    {year:"Early 1980s",text:"Ronald Reagan entered office with the most hardline anti-Soviet stance in decades. He called the USSR an 'evil empire' and dramatically increased military spending, forcing the Soviets into an arms race they couldn't afford. His Strategic Defence Initiative (SDI) — nicknamed 'Star Wars' — proposed a space-based missile shield that would make Soviet nuclear weapons obsolete. Whether or not SDI would actually work was almost irrelevant; it undermined the concept of Mutually Assured Destruction and left the USSR terrifyingly vulnerable."},
+    {year:"1985",text:"Mikhail Gorbachev came to power in the USSR and everything changed. Unlike his predecessors, Gorbachev recognized that the Soviet system was failing. Under Brezhnev, roughly 25% of GDP had gone to military spending, draining the civilian economy. Gorbachev inherited a declining, exhausted nation. His response was radical: Perestroika (restructuring the economy) and Glasnost (openness to public scrutiny and criticism). For the first time, Soviet citizens could openly discuss what wasn't working — and compare their system to capitalism."},
+    {year:"1985–88",text:"Reagan and Gorbachev met at multiple summits. Both men saw the dangers of nuclear weapons — they even discussed eliminating them entirely. Both were prepared to reverse their previous positions to reach compromises. The result was the INF Treaty of 1987, eliminating intermediate-range nuclear weapons from Europe. Reagan proved a better negotiator than anyone expected, willing to set aside his 'evil empire' rhetoric when genuine progress was possible."},
+    {year:"1988",text:"Gorbachev abandoned the Brezhnev Doctrine — the policy that the USSR would use force to keep satellite states communist. In its place came what was jokingly called the 'Sinatra Doctrine' (after Frank Sinatra's 'My Way'): Eastern European countries could now choose their own political path. Gorbachev would not send tanks to crush protests. This single decision sealed the fate of the Soviet empire."},
+    {year:"1989",text:"The dominoes fell, but this time in reverse. Across Eastern Europe, satellite states erupted in protest. People who had lived under communist rule for 40 years had watched Western living standards through border television and knew what they were missing. State-controlled industries were inefficient, products were shoddy, and shelves were bare. When Gorbachev made clear the Red Army wouldn't intervene, it was the green light. Country after country threw off communist rule. The Berlin Wall fell in November — the most powerful symbol of the Cold War destroyed by ordinary people with hammers."},
+    {year:"1991",text:"The Soviet Union itself dissolved. Gorbachev's reforms had unleashed forces he couldn't control — Glasnost allowed criticism that undermined the system, while Perestroika failed to revive the economy fast enough. Capitalism appeared to have triumphed. International politics became 'uni-polar' — the USA was the only superpower left standing. Cuba lost its Soviet subsidies and plunged into the 'Special Period' of severe hardship. African regimes that had depended on Soviet aid collapsed. The Cold War was over."},
+    {year:"Legacy",text:"Who ended the Cold War? Reagan's supporters credit his military pressure, which bankrupted the Soviets. Gorbachev's supporters point to his courage in reforming a failing system and choosing peace over force. The truth is that both were essential: Reagan created the pressure, and Gorbachev responded not with escalation but with transformation. Both saw the dangers of nuclear weapons, both worked through summits, and both were willing to reverse their positions. But Gorbachev's impact was larger — his decisions led directly to the collapse of the USSR and the end of the Cold War."}
+  ]
+},
+au_muss_rise:{
+  title:"From Chaos to Fascism: Mussolini's Rise (1871–1922)",
+  events:[
+    {year:"1871–1914",text:"Italy was unified on paper but broken in practice. Parliamentary government was weak — the 1848 Statuto gave the king broad powers, and only 2% of the population could vote. Corruption was endemic through 'transformism,' where political leaders constantly switched alliances to stay in power. The north developed industries in textiles, chemicals, and steel, while the south remained desperately poor and agricultural. Six million Italians emigrated because they saw no future at home. Italy joined the Triple Alliance and tried to build an empire — gaining Eritrea, Somalia, and Libya — but the humiliating defeat at Adowa in 1896 against Ethiopia showed the world that Italy was the weakest of the great powers."},
+    {year:"1915–18",text:"Italy entered World War I hoping for territorial rewards. The cost was enormous, and when the peace came, Italy received far less than promised. The 'mutilated victory' at Versailles became a national grievance that poisoned Italian politics for years."},
+    {year:"1919–20",text:"Post-war Italy was in crisis. Two million soldiers returned to find no jobs. Prices soared while wages stagnated. The 'Red Biennium' of 1919-1920 saw waves of strikes and factory occupations as workers demanded better conditions. In the countryside, landless peasants seized farms. For the Italian middle class, elites, and business owners, it looked like communist revolution was imminent — and they were terrified."},
+    {year:"1919–21",text:"Into this chaos stepped Benito Mussolini. A former socialist journalist who had run the newspaper Avanti! before breaking with the left, he founded the Fasci di Combattimento in 1919. His genius was positioning fascism as the answer to everyone's fears. Using his newspaper Il Popolo d'Italia, he spread nationalism and anti-communism. He adopted Roman symbols like the fasces to project unity and power. His blackshirt squads violently attacked socialists, broke strikes, and destroyed leftist offices — winning the gratitude of industrialists and landowners who funded him. By 1921, a deal with the liberal politician Giolitti gave the Fascists 35 seats in parliament."},
+    {year:"Oct 1922",text:"The March on Rome was more theatre than military operation. Mussolini's blackshirts converged on the capital, but the real drama was in the royal palace. King Victor Emmanuel III could have declared martial law and crushed the march, but he feared civil war and doubted the army's loyalty. Instead, he invited Mussolini to form a government. At 39, the former journalist was Prime Minister of Italy. The march was later mythologized through propaganda as a glorious seizure of power, but in truth it was a bluff that worked because the establishment let it."}
+  ]
+},
+au_muss_power:{
+  title:"Il Duce: Mussolini's Italy (1922–1943)",
+  events:[
+    {year:"1922–24",text:"Mussolini was Prime Minister but not yet dictator. He led a coalition government under the existing constitution, with few Fascists in his cabinet. He needed support from the King, army, business, and Church, any of whom could remove him. His strategy was dual: legal parliamentary maneuvers to win elite support, combined with street violence to intimidate opponents. The Acerbo Law of 1923 rigged the electoral system — whichever party got 25% of the vote would receive two-thirds of parliamentary seats."},
+    {year:"Jun 1924",text:"Socialist deputy Giacomo Matteotti publicly denounced Fascist election fraud. Days later, he was kidnapped and murdered by Fascist thugs. The opposition withdrew from parliament in protest — the 'Aventine Secession' — but this backfired. The King and elites chose to back Mussolini over chaos, and the opposition lost its platform."},
+    {year:"1925–26",text:"Mussolini moved decisively. He declared a dictatorship, banned all opposition parties, censored the press, created a secret police, and made himself accountable only to the King. As Professor Christopher Duggan noted, the regime focused on Mussolini personally rather than any clear ideology — it was a mix of force, propaganda, and opportunism. The Fascist Grand Council, created in 1923, theoretically advised on policy but in practice rubber-stamped whatever Mussolini decided."},
+    {year:"1926–34",text:"The 'Corporate State' organized Italy's economy into 22 sector corporations — each containing employers, workers, and state representatives under Fascist control. Unions were banned, strikes outlawed, and class conflict supposedly replaced by national unity. In reality, corporativism favoured businesses and enforced state dominance over workers. Mussolini called his economic programs 'battles' — the Battle for Grain (food self-sufficiency), the Battle for Births (tax breaks for large families), the Battle for the Lira (currency revaluation). The language of war made economic policy feel heroic, but results were mixed at best."},
+    {year:"1929",text:"The Lateran Accords with the Catholic Church were perhaps Mussolini's greatest diplomatic achievement. The Church gained Vatican City as an independent state, 750 million lire in compensation, and Catholicism as Italy's official religion. In return, the Fascists gained the Church's endorsement — ending decades of Catholic opposition and winning over millions of traditional rural Italians."},
+    {year:"1930s",text:"The Great Depression hit Italy hard. The IRI (Institute for Industrial Reconstruction) nationalized key industries and stabilized banking, with steel production rising 50%. The Dopolavoro leisure organization was genuinely popular, providing recreation for ordinary workers. But the bigger picture was grim: GDP growth averaged only 1.5% annually, well below pre-war levels. Autarky (self-sufficiency) led to inefficiency and shortages. Wages fell, the South remained poor, women were confined to domestic roles, and war preparation wasted increasingly scarce resources. As one assessment put it, Fascist propaganda was 'essentially rhetoric and blather' — exaggerating successes while hiding structural failures."}
+  ]
+},
+au_peron_rise:{
+  title:"The Rise of Perón (1930–1946)",
+  events:[
+    {year:"1880–1930",text:"Argentina was the success story of Latin America. Built on a booming agricultural export economy — wheat and meat shipped to Europe — Buenos Aires transformed from a sprawling village into the 'Paris of South America.' The oligarchy, an educated elite of about 2-3% of the population, owned 95% of the land and lived in French-designed mansions in Barrio Norte. Meanwhile, European immigrants — millions of Italians and Spaniards — lived in crowded conventillos, tenements housing up to 350 people in cramped, poorly ventilated rooms. The gap between rich and poor was enormous, and it was growing."},
+    {year:"1930–43",text:"The Great Depression shattered everything. A military coup toppled Argentina's democratic government, beginning what became known as the 'Infamous Decade' — a period of corrupt autocratic rule. Commodity prices collapsed, imports dried up, and people lost faith in the political system. Some industrial development began as Argentina tried to reduce its dependence on imports, but the fundamental problems — inequality, corruption, a broken political system — only deepened."},
+    {year:"1943",text:"A military coup brought the GOU (Group of United Officers) to power — a secret society of young nationalist, anti-communist, ultra-Catholic officers including Colonel Juan Perón. They aimed to end corruption, restore the constitution, strengthen industry, and maintain neutrality in WWII. Crucially, they believed that improving workers' conditions from above would prevent communism from spreading — a strategy that would define Perón's entire political career."},
+    {year:"1943–45",text:"Perón was appointed head of the Labour Department, which soon became the Secretary of Labour and Welfare. It was the perfect platform. He used the position to implement real reforms — paid vacations, severance pay, minimum wages, pensions — that directly improved millions of workers' lives. The genius of Perón's approach was that he made unions dependent on him personally. Workers understood that if Perón fell, their new rights might disappear with him. His experiences in Europe had taught him well — he admired Mussolini's organizational methods and learned practical ways to control and mobilize the masses."},
+    {year:"9–17 Oct 1945",text:"Perón's growing power alarmed the military establishment and industrial elites. On 9 October, they had him arrested. But they underestimated what he had built. Eight days later, on 17 October 1945, a massive spontaneous demonstration of workers filled the streets of Buenos Aires demanding Perón's release. It was the awakening of Argentina's working-class political consciousness — a moment that changed the country forever. Perón was released, and the path to the presidency was open."},
+    {year:"Feb 1946",text:"Perón won a decisive election victory. His coalition took all national senators except two, a two-thirds majority in the Chamber of Deputies, and every provincial governorship but one. The mandate was overwhelming, but Perón knew his position was still not fully secure — he lacked complete endorsement from all sectors of the armed forces and the civilian establishment."}
+  ]
+},
+au_peron_power:{
+  title:"Perón in Power (1946–1955)",
+  events:[
+    {year:"1946–47",text:"Perón moved swiftly to consolidate control. He dissolved all the parties that had supported his campaign and replaced them with a single party under his personal command — the Partido Justicialista. He purged the Supreme Court by impeaching three justices and appointing loyal replacements. Between 1943 and 1946, 110 publications were forced to close through fake inspections and disrupted paper supplies. Civil servants were required to join the Peronist Party. Opposition existed in name, but Radical leaders were expelled or jailed, and police disrupted opposition meetings."},
+    {year:"1946–49",text:"Economically, Perón nationalized everything he could: the Central Bank (1946), railways, telecommunications, and foreign trade through the IAPI monopoly on exports. He pursued Import Substitution Industrialization (ISI), protecting domestic industries with tariffs and subsidies while using grain export profits to fund urban industrialization. Wages rose, prices were controlled, rents were frozen, and subsidized bakeries and utilities made life tangibly better for the working class. It was a purely statist policy — the government dominated every aspect of economic life."},
+    {year:"Late 1940s",text:"Eva Perón became the emotional face of the regime. Through the Eva Perón Foundation (FEP) — which surpassed most government ministries in size, with assets exceeding $200 million and 14,000 employees — she personally delivered goods to the poor, attended to families, and built low-cost homes and hospitals. Her autobiographical manifesto 'La razón de mi vida' (1951) glorified Peronism and defined women's role as loyal supporters of Perón within the home. The FEP was a tool of political control as much as charity, but its impact on the lives of ordinary Argentines was real."},
+    {year:"1949",text:"A new constitution allowed presidential re-election, nationalized public services, enabled state intervention in trade, and enshrined social rights. New textbooks conveyed Peronist messages through nationalist rhetoric with no criticism allowed. Teachers were required to transmit Peronist doctrine. Media was state-controlled, rallies were staged, and visual propaganda portrayed Perón and Evita as saviours of the working class."},
+    {year:"1951",text:"The economy began to turn. Inflation rose, shortages appeared, and the easy gains of the early years evaporated. In 1951, Perón shut down La Prensa, one of Argentina's most prestigious newspapers, using official radio to counter its editorials before reopening it under pro-Perón direction. The regime's authoritarianism was becoming harder to disguise."},
+    {year:"1955",text:"Economic decline after 1951 brought inflation and shortages that hurt workers, the middle class, and landowners alike. The Church, armed forces, and political parties — all alienated by Perón's authoritarianism and the cult of Eva (who had died in 1952) — formed an opposition coalition. Perón attacked the Church and repressed remaining freedoms. After a bombing of the presidential palace in June 1955, a military coup on 16 September overthrew him. Perón fled into exile, not returning until 1973."}
+  ]
+},
+au_castro_rise:{
+  title:"Revolution in Cuba (1952–1959)",
+  events:[
+    {year:"Before 1952",text:"Cuba was a paradox: high per capita income but deep inequality. The economy was a sugar-dominated monoculture, with US companies like United Fruit, Esso, and Texaco controlling key sectors. The Platt Amendment (1901-1934) had granted America the right to intervene in Cuba's internal affairs and secured the Guantánamo naval base, creating a semi-colonial relationship that defined Cuban nationalism as fundamentally anti-American. José Martí — the poet, journalist, and revolutionary who launched Cuba's 1895 independence war — remained the national hero whose ideals Castro would later claim to embody."},
+    {year:"1940s–50s",text:"American organized crime, led by Meyer Lansky, turned Havana into a 'Latin Las Vegas' of casinos, nightclubs, and vice. Batista's first term (1940-44) had been relatively populist, but after his 1952 coup, 'the second Batista' was lazy and corrupt — driven by election fears and army demands, he failed to curb corruption while engaging in it himself. Unemployment hit 17%, rural poverty was extreme, and 200,000 peasant families had no land at all."},
+    {year:"26 Jul 1953",text:"Fidel Castro, a young lawyer who had been running for Congress when Batista's coup cancelled elections, turned to armed revolution. His attack on the Moncada barracks with 140 rebels was meant to seize weapons and spark a nationwide uprising. It failed catastrophically — most attackers were killed or captured. But Castro's trial speech, 'History Will Absolve Me,' identified Cuba's crises with statistics and specific reform promises, transforming a courtroom defense into a revolutionary manifesto. The 26th of July Movement was born."},
+    {year:"Dec 1956",text:"After exile in Mexico, Castro returned aboard the overloaded yacht Granma with about 80 armed rebels. Everything went wrong — delays, mechanical failures, a swamp landing that cost them their supplies, then a devastating ambush at Alegría de Pío. Only 12 survivors regrouped in the Sierra Maestra mountains. Among them were Raúl Castro, Che Guevara (an Argentine doctor who had joined in Mexico), and Camilo Cienfuegos."},
+    {year:"1957–58",text:"From the Sierra Maestra, the rebels waged guerrilla warfare on their own terms — fighting on familiar, rugged terrain with unpaid but ideologically motivated soldiers who treated captured enemies humanely. Women like Vilma Espín, Haydée Santamaría, and Celia Sánchez played crucial roles in urban coordination, arms smuggling, and propaganda. The 26th of July Movement used bombings, sabotage of power infrastructure, and assassinations to destabilize Batista's regime. Castro's image as an approachable leader connected to the peasantry won him cross-class support."},
+    {year:"1958–59",text:"Batista's own brutality sealed his fate. Mass torture and killings after Moncada and Granma had alienated the population. His army, demoralized and corrupt, began to crumble. In 1957, the US imposed an arms embargo after discovering Batista was misusing weapons meant for hemispheric defense. By late 1958, the question was not whether Batista would fall but when. On January 1, 1959, he fled. Castro and Cienfuegos entered Havana in triumph — signaling the end of tyranny and the dawn of a new Cuba."}
+  ]
+},
+au_castro_power:{
+  title:"Castro's Cuba (1959–Present)",
+  events:[
+    {year:"1959–60",text:"Castro moved fast. He removed Batista supporters and liberals from government, crushed revolts in the provinces, and implemented radical reforms. The Agrarian Reform redistributed land until the state owned 70% by 1963. Foreign businesses, sugar mills, and banks were nationalized. Rents were cut 50%, then later abolished entirely. When revolutionary commander Huber Matos criticized the growing communist influence, he was arrested for treason and sentenced to 20 years in a show trial — demonstrating that dissent, even from revolutionary heroes, would not be tolerated."},
+    {year:"1960–61",text:"US-Cuba relations deteriorated rapidly as nationalization of American property provoked Washington. A commercial embargo was imposed, diplomatic relations broken, and the CIA planned an invasion. The Committees for the Defence of the Revolution (CDRs) were established — surveillance committees in every workplace and neighborhood block, with a third of the population enrolled by 1963. The literacy campaign of 1961 deployed 170,000 teachers to rural areas, dropping illiteracy from 23% to 4% — more schools were built in three years than in the previous 58. But education also became a tool for ideological formation."},
+    {year:"Apr 1961",text:"The Bay of Pigs invasion was a humiliating American defeat and a propaganda triumph for Castro. It validated his warnings about US imperialism, rallied the population behind the revolution, and justified crackdowns on internal opposition. It accelerated Cuba's embrace of the USSR — Soviet economic aid, oil, machinery, and military equipment began flowing in."},
+    {year:"Dec 1961",text:"Castro publicly declared himself a Marxist-Leninist. The reasons were partly pragmatic: US hostility forced him to seek Soviet protection, and Soviet aid required ideological alignment. Liberals and moderates had been pushed out; the PSP (Communist Party) filled the vacuum. Che Guevara's influence pushed toward a vision of the 'new man' who works for collective good rather than personal gain — an inspiring but ultimately impractical ideal."},
+    {year:"1962",text:"The Cuban Missile Crisis showed Cuba was a pawn in superpower politics. The Soviets removed their missiles without consulting Castro — a bitter disappointment. But the US promise not to invade secured Cuba's survival, and Soviet subsidies continued for nearly three decades."},
+    {year:"1960s–70s",text:"Castro's Cuba became a one-party state with total media control. Castro's speeches — long, passionate, instructing — were broadcast constantly. Every policy was framed in military language: harvests were 'battles,' plans were 'liberation campaigns.' Visual propaganda through posters rallied support for campaigns. The UMAP camps (1965-68) sent 25,000 people — dissidents, homosexuals, religious objectors — to forced labour. Castro told intellectuals: 'Within the Revolution, everything; against the Revolution, nothing.' The Padilla Affair in 1971, when a poet was arrested and forced into public confession, launched the 'grey years' of cultural terror."},
+    {year:"1980",text:"The Mariel Boatlift revealed the regime's cracks. Over 125,000 Cubans fled via the port of Mariel. Castro used emigration as a safety valve — releasing prisoners and mentally ill people onto the boats and calling all emigrants 'scum.' It was repressive but pragmatic: letting dissatisfied people leave prevented the pressure from building to revolution."},
+    {year:"1991–",text:"The collapse of the USSR was catastrophic. Soviet trade, subsidies, oil, and technicians all vanished overnight. Castro declared 'a special period in peacetime.' Severe food shortages, energy crises, and disease followed. In response, Cuba opened to foreign investment and tourism, legalized the US dollar (1993), allowed limited self-employment, and converted state farms to cooperatives. The revolution survived through adaptation — but the pure socialist vision was gone."}
+  ]
+},
+rc_islamic:{
+  title:"When the Moors Ruled Iberia (711–1492)",
+  events:[
+    {year:"711",text:"The Muslim conquest of the Iberian Peninsula was shockingly easy. The Goths — the Germanic people who had ruled Spain since the Roman Empire's decline — were torn apart by internal power struggles over the kingship. When the Moors crossed from North Africa, they defeated Roderic, the last Gothic king, and swept across nearly the entire peninsula in just a few years."},
+    {year:"8th–10th C",text:"Under Muslim rule, Al-Andalus became one of the most advanced civilizations in the world. The Moors introduced new irrigation systems, new crops (sugar, cotton, silk), paper, and glass. Architecture, mathematics, medicine, and philosophy flourished, influencing all of Western Europe. This period gave rise to the concept of 'La Convivencia' — the idea that Muslims, Christians, and Jews coexisted in relative harmony. Bernard Lewis called it a 'golden age' by the standards of the time."},
+    {year:"Reality",text:"The truth was more complicated. Non-Muslims were treated better than most conquered peoples in that era — they weren't confined to separate districts, weren't slaves, could practice their faith (with restrictions), and could earn a living. But they had to acknowledge Islamic superiority, pay extra taxes, wear a special badge, couldn't carry weapons, and Muslim men could marry non-Muslim women but not the reverse. David Nirenberg argued that violence was actually a central and systematic aspect of this coexistence — the 1066 massacre of Jews in Granada being a stark example."},
+    {year:"11th–13th C",text:"Internal political and religious conflicts broke the Caliphate into numerous taifas — small, competing kingdoms. This fragmentation was the opportunity the Christian kingdoms in the north had been waiting for. They survived, grew strong, and launched the slow, centuries-long advance that would become the Reconquest. Muslim unity was briefly restored by forces from North Africa, but internal rebellions in 1144-45 shattered it permanently."},
+    {year:"1492",text:"By the time Ferdinand and Isabella conquered Granada, the last Muslim stronghold, in 1492, Islam's dominion over Spain had been dying for centuries. What followed — forced conversions, expulsions, and the Inquisition — was the brutal conclusion of a story that had begun with relatively peaceful coexistence and ended in intolerance."}
+  ]
+},
+rc_reconquest:{
+  title:"The Reconquest and Spain's Transformation",
+  events:[
+    {year:"9th C",text:"The discovery of St. James's tomb in northwestern Spain gave the Christian kingdoms a warrior patron saint and a rallying cry. The Reconquest — centuries of warfare to reclaim the peninsula from Muslim rule — became not just a military campaign but a crusade. War became almost a Castilian way of life, creating a large class of warrior-nobles who regarded manual labour with contempt. Because constant warfare and raiding made farmland vulnerable, mobile property like sheep was favoured over agriculture — a preference that would shape Spain's economy for centuries."},
+    {year:"13th C",text:"By the end of the 1200s, Muslim territory had been reduced to the small Kingdom of Granada. The Christian kingdoms were dominant but far from unified — Castile was ruled by powerful nobles with vast land holdings, while Aragon was governed by merchants who gained power through Mediterranean trade and commerce."},
+    {year:"1469–92",text:"The marriage of Ferdinand of Aragon and Isabella of Castile created a unified Spain, but their policies sowed the seeds of future problems. They expanded Spanish influence and conquered Granada in 1492, but modern historians criticize them for favouring the aristocracy — by 1500, about 2-3% of the population owned 95% of the land. Eighty percent of Spaniards were impoverished peasants, which crippled the domestic market and meant Spain's industrial production never reached England's level."},
+    {year:"1478",text:"The Spanish Inquisition was established to ensure religious orthodoxy in the newly unified kingdom. It targeted conversos — Jews and Muslims who had converted to Christianity but were suspected of secretly practicing their old faiths. The ideology of 'limpieza de sangre' (purity of blood) took hold, demanding a Spain cleansed of non-Christian elements."},
+    {year:"1491",text:"The Treaty of Granada promised Muslims preservation of their mosques, use of their language, and the right to follow their own laws and customs. These promises were broken within a decade."},
+    {year:"1492",text:"Three world-changing events in one year: the fall of Granada, the expulsion of the Jews, and Columbus's voyage to the Americas. The Jews — dominant in trade, finance, tax collection, and medicine — were forced to choose conversion or exile. Their loss crippled Spain's economy at the exact moment it was gaining an empire. As the historian Carlos Fuentes noted, the Spanish Empire was 'half-crippled' from birth."},
+    {year:"1502–1609",text:"Muslims faced the same choice as Jews: convert or leave. Cardinal Cisneros organized mass conversions and burned over 5,000 priceless Arabic manuscripts. The First Rebellion of the Alpujarras (1499-1500) and Second Rebellion (1567, after Philip II banned Arabic language, dress, and customs) showed the futility of forced assimilation. The town of Galera was razed, salt sprinkled over the ruins, and 2,500 people slaughtered. The final expulsion of the Moriscos came in 1609."}
+  ]
+},
+rc_expulsions:{
+  title:"Purging the Peninsula: The Expulsions (1478–1609)",
+  events:[
+    {year:"1478",text:"The Spanish Inquisition was established by Ferdinand and Isabella with a singular purpose: ensure religious orthodoxy in the newly unified kingdom. Its primary targets were conversos — Jews and Muslims who had converted to Christianity, often under pressure, but were suspected of secretly practicing their former religions. The ideology of 'limpieza de sangre' (purity of blood) took hold, demanding a Spain purified of all non-Christian elements."},
+    {year:"1491",text:"The Treaty of Granada, signed between Boabdil and the Catholic Monarchs, promised Muslims the preservation of their mosques and religious institutions, the use of their language, and the right to follow their own laws and customs. It seemed like a generous peace for the last Muslim stronghold. It would prove to be a lie."},
+    {year:"1492",text:"The Edict of Expulsion of the Jews gave Spain's Jewish population an impossible choice: convert to Christianity or leave. The monarchs argued that previous measures had failed. In reality, the Jews were a dynamic economic force: dominant in trade, finance, tax collection, and medicine. Their expulsion crippled Spain at the exact moment it was gaining a global empire — the empire was born 'half-crippled.'"},
+    {year:"1499–1500",text:"Cardinal Cisneros, Isabella's confessor, organized mass conversions and ordered the burning of over 5,000 priceless Muslim manuscripts in Arabic. When one of his agents was assassinated, the crown revoked the Treaty of Granada's promises. Muslims now faced exile or baptism. This triggered the First Rebellion of the Alpujarras."},
+    {year:"1567",text:"Philip II banned Arabic language, Islamic religion, dress, and customs — attempting to erase Moorish identity. The Second Rebellion of the Alpujarras followed. Don John's forces razed Galera: salt sprinkled over the ruins, 2,500 slaughtered including 400 women and children. Moriscos who outwardly conformed secretly maintained their festivals and rituals — a defiance Old Christians found deeply offensive."},
+    {year:"4 Apr 1609",text:"Philip III signed the final expulsion decree for the Moriscos. Beginning October 1609, converted Muslims were driven from Spain, mostly to the Maghrib coast. Their numbers had been growing, some had become successful merchants, and their refusal to abandon their cultural identity made them permanent outsiders. Spain completed the religious purification begun over a century earlier — and lost yet another community of skilled citizens it could not afford to lose."}
+  ]
+},
+rc_mexico:{
+  title:"The Fall of the Aztecs (1519–1521)",
+  events:[
+    {year:"Before 1519",text:"Tenochtitlán was one of the great cities of the world — built on a salt lake, home to at least 250,000 people, with wide straight streets that were half land and half canals. Its marketplace, comparable to Salamanca, hosted 60,000 traders daily. Forty towers, some taller than Seville's cathedral, rose above the city. Fresh water flowed from the Chapultepec aqueduct. But the Aztec Empire had enemies. The Tlaxcalans endured perpetual 'flower wars' — ritual conflicts that provided human sacrifices. Their hatred of the Aztecs ran so deep that when a strange new enemy appeared, the Tlaxcalans would become his most loyal allies."},
+    {year:"1517–18",text:"The first Spanish expeditions to the Yucatán discovered the riches of mainland Mexico. Hernández de Córdoba returned mortally wounded after fierce Maya resistance. Grijalva's follow-up expedition traded with locals and heard rumors of the Aztec Empire's vast wealth through Moctezuma's emissaries."},
+    {year:"Feb 1519",text:"Hernán Cortés sailed from Cuba with permission from Governor Velázquez to explore and trade — but explicitly not to colonize. Cortés, who had studied law at the University of Salamanca, knew exactly what he was doing when he exceeded his authority. His legal training would prove as important as his military skill — every letter to King Charles V was a carefully crafted argument for why his unauthorized conquest should be legitimized."},
+    {year:"1519",text:"Two factors converged to doom the Aztecs: myth and weaponry. The year 1519 corresponded to the prophesied return of Quetzalcoatl — the feathered serpent god, described as fair-skinned and bearded, arriving from the east. Cortés matched the description. Additionally, the Spanish brought steel swords, armor, guns, and horses — none of which the Aztecs had ever seen. They also brought a translator who changed history: Malintzin (La Malinche), an indigenous woman fluent in Nahuatl and Mayan, who became Cortés's interpreter, advisor, and the key to communicating with Aztec emissaries and recruiting allies."},
+    {year:"Nov 1519",text:"Cortés entered Tenochtitlán via the Iztapalapa Causeway. Bernal Díaz del Castillo, a common soldier whose memoir provides the rawest account of the conquest, described his awe at the city's beauty — the crowded lake full of canoes, causeways with bridges, towers and shrines of masonry. Cortés attempted to embrace Moctezuma but was stopped by the lords. He placed a necklace of pearls and cut glass around Moctezuma's neck. Two worlds had met."},
+    {year:"1520",text:"The Spanish massacred Aztec nobles during a festival, sparking a revolt that drove Cortés out during the 'Noche Triste' (Night of Sorrows) via the Tacuba Causeway. Moctezuma died during the fighting — Cortés claimed he was killed by his own people with arrows and stones; Bernal Díaz said a single stone strike killed him. The Aztecs' ritualistic approach to war — prioritizing live capture over killing — had prevented them from destroying the Spanish when they had the chance."},
+    {year:"Aug 1521",text:"Cortés returned with Tlaxcalan allies and laid siege to Tenochtitlán. After months of brutal fighting, disease (smallpox had devastated the defenders), and starvation, the city fell on August 13, 1521. The Broken Spears — a collection of indigenous accounts using surviving codices — records these events from the perspective of the conquered, preserving what the conquerors' accounts leave out."}
+  ]
+},
+rc_peru:{
+  title:"The Conquest of the Inca Empire (1532–1548)",
+  events:[
+    {year:"Before 1532",text:"The Inca Empire — Tawantinsuyu, the 'Four Quarters' — was the largest in pre-Columbian America, stretching from Ecuador to Chile. Over 25,000 miles of roads connected it. The Sapa Inca ruled as a divine descendant of the sun god Inti. There was no writing (records were kept on quipus), no money (a labor tax system instead), and no slavery as Europeans understood it. They mastered high-altitude farming with terraced fields and irrigation. Their army fielded tens of thousands of warriors — but armed with slings, clubs, and bronze weapons, not steel."},
+    {year:"c.1528–32",text:"Before a single Spaniard arrived, smallpox — brought by earlier European contact — swept through the empire. Emperor Huayna Capac died, and a devastating civil war erupted between his sons Atahualpa (who controlled the north) and Huáscar (who held the south). This internal conflict divided loyalties, depleted resources, and left the empire fragmented. It was into this chaos that Francisco Pizarro marched."},
+    {year:"Nov 1532",text:"At Cajamarca, history's most audacious ambush unfolded. Pizarro — an illiterate soldier of fortune from Extremadura, Spain's poorest region — lured Atahualpa into the town's plaza for a meeting. Fray Valverde delivered a religious ultimatum demanding the Inca accept Christianity and submit to Spanish rule, presenting a Bible. When Atahualpa discarded the Bible, Valverde signaled the attack. With cannons, cavalry, and steel, 168 Spaniards slaughtered thousands of lightly armed Incas and captured the emperor."},
+    {year:"1532–33",text:"Atahualpa offered an extraordinary ransom — enough gold to fill a room — and Huáscar tried to match it. The Spanish took both offers and then executed Atahualpa anyway, after a mock trial on charges of rebellion. He was garroted in Cajamarca's plaza after accepting baptism — sources broadly agree on strangulation, though details vary."},
+    {year:"1533–41",text:"Post-conquest Peru descended into chaos that revealed the true nature of the conquistadors. Pizarro installed Manco as a puppet Inca ruler, but Manco rebelled in 1536 with a massive insurrection. Then Pizarro and his former partner Diego de Almagro turned on each other over control of Cusco. Almagro was strangled in 1538; his embittered followers assassinated Pizarro in 1541. The conquistadors were driven by personal gain — wealth, land, and power — not loyalty to Spain."},
+    {year:"1544–48",text:"When Viceroy Blasco Núñez Vela arrived to enforce the New Laws (which restricted the encomienda system), the settlers revolted. Gonzalo Pizarro — Francisco's half-brother — killed the viceroy and briefly ruled Peru until he was defeated by Pedro de la Gasca in 1548. The Crown learned that its conquistadors were as dangerous as its enemies, and began replacing them with professional administrators."},
+    {year:"How?",text:"How did a handful of Spaniards conquer two empires? Five factors combined: superior military technology (steel, guns, horses); indigenous alliances (the Tlaxcalans against the Aztecs, rival Inca factions against Atahualpa); disease (smallpox devastated both empires before full-scale fighting); centralized rule (capturing the divine emperor paralyzed the entire system); and religious/cultural misunderstandings that the Spanish ruthlessly exploited. Remove any single factor, and the conquest might have failed."}
+  ]
+},
+rc_colonial:{
+  title:"God, Gold, and Glory: Colonial Systems",
+  events:[
+    {year:"Connection",text:"The Conquest of the Americas was a direct continuation of the Reconquest in Iberia. Centuries of warfare against the Moors had bred a warrior aristocracy in Extremadura and Castile — men proud of their Christian blood but without a penny, whose one resource was to go to the wars. When the Reconquista ended in 1492, these men turned to the New World, carrying the same trinity of motives: God, Gold, and Glory. Cortés explicitly compared indigenous architecture to Granada. The template of domination and exclusion, perfected against the Moors, was applied wholesale to the Americas."},
+    {year:"Early 1500s",text:"The Encomienda system became the backbone of colonial exploitation. Spanish settlers (encomenderos) were granted authority over groups of indigenous people, who were required to provide labour, tribute, or goods in exchange for supposed protection and Christian instruction. It wasn't legally slavery, but in practice the distinction was often meaningless. The Mita system in the Andes went further — requiring indigenous communities to provide workers for mines, plantations, or public projects in rotational shifts that frequently led to forced displacement and death."},
+    {year:"1502–14",text:"Bartolomé de Las Casas arrived in the New World as a colonist and encomendero. But in 1514, witnessing the atrocities firsthand and hearing a sermon denouncing the encomienda system, he underwent a dramatic conversion. He renounced his wealth, became a Dominican friar, and dedicated his life to defending indigenous peoples. His 'Short Account of the Destruction of the Indies' (1542) documented colonial horrors with vivid detail."},
+    {year:"1542–43",text:"Las Casas's advocacy influenced the New Laws, enacted under Emperor Charles V. Encomiendas couldn't be inherited. Indigenous enslavement was banned. Labour burdens were to be reduced. But enforcement was another matter — in Peru, Gonzalo Pizarro led a full rebellion against the laws, killing the viceroy. The Crown was forced to weaken enforcement, revealing the limits of reform when those profiting from exploitation had armies."},
+    {year:"1550–51",text:"The Valladolid Debate was the intellectual climax of the colonial moral crisis. Juan Ginés de Sepúlveda argued that indigenous peoples were 'natural slaves' who could be rightfully conquered and forcibly converted. Las Casas countered that they were rational humans with inherent rights, deserving of peaceful evangelization. Sepúlveda was backed by colonial elites; Las Casas by Dominican and Franciscan missionaries and parts of the Crown. The debate had no clear winner, but Las Casas's arguments planted seeds that would grow into modern human rights discourse."},
+    {year:"Legacy",text:"Las Casas's writings, ironically, also fueled the 'Black Legend' — a narrative of unique Spanish cruelty that Spain's rivals (England, Netherlands) translated and spread as anti-Spanish propaganda. The Church's role was equally complex: elite friars driven by genuine missionary zeal arrived alongside conquistadors, some envisioning utopian indigenous communities. Vasco de Quiroga and Las Casas admired indigenous simplicity. But these reformist attitudes always clashed with the encomenderos' profit motive. As Louise Burkhart observed, indigenous peoples found ways to become 'just Christian enough to get by' — the Day of the Dead, merging Aztec death rituals with All Saints' Day, survives as living proof that the conquered were never fully conquered."}
+  ]
+}
+};
+
+// ─── SRS INTERVALS (short-term first) ───
+const SRS_INTERVALS=[
+  2*60*1000,5*60*1000,15*60*1000,60*60*1000,4*3600000,12*3600000,
+  86400000,3*86400000,7*86400000,14*86400000,30*86400000
+];
+const SRS_LABELS=['2m','5m','15m','1h','4h','12h','1d','3d','1w','2w','1mo'];
+
+function formatCountdown(ms){
+  if(ms<=0)return'now';const s=Math.floor(ms/1000),m=Math.floor(s/60),h=Math.floor(m/60),d=Math.floor(h/24);
+  if(d>0)return`${d}d ${h%24}h`;if(h>0)return`${h}h ${m%60}m`;if(m>0)return`${m}m ${s%60}s`;return`${s}s`;
+}
+
+// ─── STATS STORE — subtopic SRS ───
+function createStatsStore(){
+  const KEY='ib_history_sl_stats_v3';
+  let data;try{data=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){data={}}
+  if(!data.attempts)data.attempts=[];if(!data.srs)data.srs={};
+  if(!data.totalSessions)data.totalSessions=0;if(!data.firstOpened)data.firstOpened=Date.now();
+  data.totalSessions++;
+  const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(data))}catch(e){}};
+  let _pt=null;
+  const saveAndSync=()=>{save();if(CloudSync.isConfigured()){clearTimeout(_pt);_pt=setTimeout(()=>CloudSync.push(data),2000)}};
+  save();
+  return{
+    record(cat,mode,score,total,detail){data.attempts.push({cat,mode,score,total,detail,ts:Date.now()});saveAndSync()},
+    updateSubtopicSrs(catId,score,total){
+      const ratio=score/Math.max(total,1);
+      let c=data.srs[catId]||{level:0,next:0,streak:0,lastReview:0,totalReviews:0};
+      c.lastReview=Date.now();c.totalReviews++;
+      if(ratio>=0.6){c.streak++;c.level=Math.min(c.level+1,SRS_INTERVALS.length-1)}
+      else{c.streak=0;c.level=Math.max(0,c.level-2)}
+      c.next=Date.now()+SRS_INTERVALS[c.level];
+      data.srs[catId]=c;saveAndSync();
+    },
+    getSrs(catId){return data.srs[catId]||null},
+    getAllSrs(){return data.srs},
+    getDueCats(){const now=Date.now();return Object.entries(data.srs).filter(([,v])=>v.next<=now).map(([k])=>k)},
+    getSubtopicProf(catId){
+      const a=data.attempts.filter(x=>x.cat===catId);if(!a.length)return 0;
+      return Math.round(a.slice(-5).reduce((s,x)=>s+x.score/x.total,0)/Math.min(a.length,5)*100);
+    },
+    getGrade(catId){
+      const p=this.getSubtopicProf(catId);
+      if(p>=90)return{g:'A',c:'var(--green)',l:'Excellent'};if(p>=75)return{g:'B',c:'#86efac',l:'Strong'};
+      if(p>=60)return{g:'C',c:'var(--accent2)',l:'Okay'};if(p>=40)return{g:'D',c:'var(--orange)',l:'Needs Work'};
+      if(p>0)return{g:'E',c:'var(--red)',l:'Weak'};return{g:'—',c:'var(--text3)',l:'New'};
+    },
+    proficiency(){
+      const cats=Object.keys(CATEGORIES);
+      const sc=cats.map(c=>{const a=data.attempts.filter(x=>x.cat===c);return a.length?a.reduce((s,x)=>s+x.score/x.total,0)/a.length:0});
+      const acc=sc.reduce((s,v)=>s+v,0)/cats.length;
+      const cov=cats.filter(c=>data.attempts.some(x=>x.cat===c)).length/cats.length;
+      const rec=data.attempts.slice(-10),old=data.attempts.slice(-20,-10);
+      const rA=rec.length?rec.reduce((s,x)=>s+x.score/x.total,0)/rec.length:0;
+      const oA=old.length?old.reduce((s,x)=>s+x.score/x.total,0)/old.length:rA;
+      return Math.round((acc*.45+cov*.25+(.5+.5*(rA-oA))*.15+Math.min(1,data.attempts.length/30)*.15)*100)
+    },
+    getAttempts(){return data.attempts},getByCat(c){return data.attempts.filter(x=>x.cat===c)},getByMode(m){return data.attempts.filter(x=>x.mode===m)},
+    reset(){data.attempts=[];data.srs={};data.totalSessions=1;data.firstOpened=Date.now();saveAndSync()},
+    exportData(){return JSON.stringify(data,null,2)},
+    importData(json){try{const p=JSON.parse(json);if(!p.attempts&&!p.srs)throw new Error('Invalid');data.attempts=p.attempts||[];data.srs=p.srs||{};data.totalSessions=p.totalSessions||1;data.firstOpened=p.firstOpened||Date.now();saveAndSync();return{success:true,cards:Object.keys(data.srs).length,attempts:data.attempts.length}}catch(e){return{success:false,error:e.message}}},
+    async pullFromCloud(){const r=await CloudSync.pull();if(!r.ok)return r;if(!r.data||r.empty)return{ok:true,msg:'No cloud data'};const cl=r.data,lA=data.attempts.length,cA=(cl.attempts||[]).length;if(cA>lA||(cA===lA&&Object.keys(cl.srs||{}).length>Object.keys(data.srs).length)){data.attempts=cl.attempts||[];data.srs=cl.srs||{};data.totalSessions=Math.max(data.totalSessions,cl.totalSessions||0);data.firstOpened=Math.min(data.firstOpened,cl.firstOpened||Date.now());save();return{ok:true,msg:`Pulled ${cA} rounds from cloud`,replaced:true}}return{ok:true,msg:`Local is newer.`,replaced:false}},
+    async pushToCloud(){return await CloudSync.push(data)},
+    get data(){return data}
+  }
+}
+
+const StatsContext=createContext();const MobileContext=createContext(false);
+const useStats=()=>useContext(StatsContext);const useMobile=()=>useContext(MobileContext);
+
+// ─── UI COMPONENTS ───
+function SplitProgress({correct,wrong,total}){
+  const r=total-correct-wrong,pct=v=>(v/Math.max(total,1))*100;
+  return <div className="split-progress">{correct>0&&<div className="seg" style={{width:`${pct(correct)}%`,background:'var(--green)'}}/>}{wrong>0&&<div className="seg" style={{width:`${pct(wrong)}%`,background:'var(--red)'}}/>}{r>0&&<div className="seg" style={{width:`${pct(r)}%`,background:'var(--bg4)'}}/>}</div>
+}
+
+function SubtopicPicker({active,setActive,topicFilter}){
+  const stats=useStats();const cats=Object.entries(CATEGORIES).filter(([,v])=>!topicFilter||v.topic===topicFilter);
+  return <div className="cat-bar"><button className={`cat-chip ${!active?'active':''}`} style={!active?{background:'var(--accent)',color:'var(--bg)'}:{}} onClick={()=>setActive(null)}>All</button>
+    {cats.map(([k,v])=>{const srs=stats.getSrs(k);const isDue=srs&&srs.next<=Date.now();
+      return <button key={k} className={`cat-chip ${active===k?'active':''}`} style={active===k?{background:v.color}:{borderColor:isDue?'var(--orange)':'var(--bg4)'}} onClick={()=>setActive(active===k?null:k)}>{isDue&&<span style={{color:'var(--orange)',marginRight:3}}>●</span>}{v.label}</button>})}</div>
+}
+function TopicFilter({active,setActive}){
+  return <div className="cat-bar"><button className={`cat-chip ${!active?'active':''}`} style={!active?{background:'var(--accent)',color:'var(--bg)'}:{}} onClick={()=>setActive(null)}>All Topics</button>
+    {Object.entries(TOPICS).map(([k,v])=><button key={k} className={`cat-chip ${active===k?'active':''}`} style={active===k?{background:v.color}:{}} onClick={()=>setActive(active===k?null:k)}>{v.icon} {v.label}</button>)}</div>
+}
+
+function SrsTimer({catId}){
+  const stats=useStats();const [now,setNow]=useState(Date.now());
+  useEffect(()=>{const i=setInterval(()=>setNow(Date.now()),1000);return()=>clearInterval(i)},[]);
+  const srs=stats.getSrs(catId);
+  if(!srs)return <span className="srs-badge" style={{background:'var(--bg4)',color:'var(--text3)'}}>NEW</span>;
+  const d=srs.next-now;
+  if(d<=0)return <span className="srs-badge" style={{background:'#fb923c22',color:'var(--orange)'}}>DUE NOW</span>;
+  return <span className="srs-badge" style={{background:srs.streak>=3?'var(--green-dim)':'var(--blue-dim)',color:srs.streak>=3?'var(--green)':'var(--blue)'}}>{formatCountdown(d)}</span>;
+}
+
+function DueBanner({topicFilter,onStart}){
+  const stats=useStats();const [,setT]=useState(0);
+  useEffect(()=>{const i=setInterval(()=>setT(t=>t+1),5000);return()=>clearInterval(i)},[]);
+  const dc=stats.getDueCats().filter(k=>!topicFilter||CATEGORIES[k]?.topic===topicFilter);
+  if(!dc.length)return null;
+  return <div className="due-banner fade-in" onClick={onStart}><div className="pulse"/><span style={{flex:1}}><strong>{dc.length}</strong> subtopic{dc.length>1?'s':''} due: {dc.map(k=>CATEGORIES[k]?.label).join(', ')}</span><span style={{color:'var(--accent)',fontWeight:600,fontSize:'.8rem'}}>Review →</span></div>
+}
+
+// ─── BROWSE ───
+function BrowseMode({items,topicFilter}){
+  const [search,setSearch]=useState('');const [cf,setCf]=useState(null);const [exp,setExp]=useState({});
+  const filtered=items.filter(c=>{if(cf&&c.cat!==cf)return false;if(topicFilter&&CATEGORIES[c.cat]?.topic!==topicFilter)return false;if(search){const s=search.toLowerCase();return c.q.toLowerCase().includes(s)||c.a.toLowerCase().includes(s)}return true});
+  return <div className="fade-in">
+    <div className="search-wrap"><span className="icon">🔍</span><input placeholder="Search facts..." value={search} onChange={e=>setSearch(e.target.value)}/></div>
+    <SubtopicPicker active={cf} setActive={setCf} topicFilter={topicFilter}/>
+    <p style={{color:'var(--text3)',fontSize:'.8rem',marginBottom:12}}>{filtered.length} items</p>
+    {filtered.map((c,i)=>{const cat=CATEGORIES[c.cat];return <div key={c.id} className={`card expandable ${exp[i]?'open':''}`} onClick={()=>setExp(p=>({...p,[i]:!p[i]}))} style={{borderLeft:`3px solid ${cat?.color}`}}>
+      <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}}><div className="card-title">{c.q}<span className="chevron">▼</span></div><span className="card-tag" style={{background:cat?.color+'22',color:cat?.color,flexShrink:0,marginLeft:8}}>{cat?.label}</span></div>
+      {exp[i]&&<div className="card-sub" style={{marginTop:10,paddingTop:10,borderTop:'1px solid var(--bg4)'}}>{c.a}</div>}
+    </div>})}
+  </div>
+}
+
+// ─── RECALL ───
+function RecallMode({items,topicFilter,modeName='Recall',forcedCards=null}){
+  const stats=useStats();const [cf,setCf]=useState(null);
+  const pool=useMemo(()=>{if(forcedCards)return forcedCards;let p=items;if(cf)p=p.filter(c=>c.cat===cf);else if(topicFilter)p=p.filter(c=>CATEGORIES[c.cat]?.topic===topicFilter);return[...p].sort(()=>Math.random()-.5)},[topicFilter,cf,forcedCards]);
+  const [idx,setIdx]=useState(0);const [fl,setFl]=useState(false);const [res,setRes]=useState(null);
+  const [sc,setSc]=useState({c:0,w:0});const [hist,setHist]=useState([]);
+  const total=Math.min(pool.length,15);const cards=pool.slice(0,total);
+  useEffect(()=>{setIdx(0);setFl(false);setSc({c:0,w:0});setHist([]);setRes(null)},[cf]);
+  const flip=useCallback(()=>{if(!fl){setFl(true);SFX.flip()}},[fl]);
+  const mark=useCallback((ok)=>{
+    const card=cards[idx];
+    if(ok){SFX.correct();setSc(p=>({...p,c:p.c+1}))}else{SFX.wrong();setSc(p=>({...p,w:p.w+1}))}
+    const nh=[...hist,{id:card.id,ok}];setHist(nh);
+    if(idx+1>=total){SFX.complete();const s=sc.c+(ok?1:0);stats.record(card.cat,modeName,s,total,modeName);
+      const cs={};nh.forEach(h=>{const c=CARDS.find(x=>x.id===h.id);if(c){if(!cs[c.cat])cs[c.cat]={s:0,t:0};cs[c.cat].t++;if(h.ok)cs[c.cat].s++}});
+      Object.entries(cs).forEach(([cat,{s,t}])=>stats.updateSubtopicSrs(cat,s,t));
+      setRes({score:s,total,hist:nh})}
+    else{setIdx(idx+1);setFl(false)}
+  },[idx,total,sc,fl,hist]);
+  useEffect(()=>{const h=e=>{if(e.code==='Space'){e.preventDefault();flip()}else if(e.key==='1'||e.code==='ArrowLeft')mark(false);else if(e.key==='2'||e.code==='ArrowRight')mark(true)};window.addEventListener('keydown',h);return()=>window.removeEventListener('keydown',h)},[flip,mark]);
+
+  if(res)return <div className="results-overlay slide-up"><div style={{fontSize:'3rem'}}>🎉</div><div className="score" style={{color:res.score/res.total>.7?'var(--green)':'var(--accent2)'}}>{res.score}/{res.total}</div><SplitProgress correct={res.score} wrong={res.total-res.score} total={res.total}/><div className="msg">{res.score/res.total>.8?'Excellent!':res.score/res.total>.5?'Good progress!':'Keep going!'}</div><div style={{textAlign:'left',marginBottom:20,maxHeight:200,overflowY:'auto'}}>{res.hist.map((h,i)=>{const c=CARDS.find(x=>x.id===h.id);return c?<div key={i} style={{display:'flex',gap:8,padding:'3px 0',fontSize:'.78rem'}}><span style={{color:h.ok?'var(--green)':'var(--red)',fontWeight:700,width:16}}>{h.ok?'✓':'✕'}</span><span style={{color:'var(--text2)'}}>{c.q}</span></div>:null})}</div><button className="btn btn-primary" onClick={()=>{setIdx(0);setFl(false);setSc({c:0,w:0});setHist([]);setRes(null)}}>Again</button></div>;
+  if(!cards.length)return <div className="fade-in">{!forcedCards&&<SubtopicPicker active={cf} setActive={setCf} topicFilter={topicFilter}/>}<p style={{color:'var(--text3)',textAlign:'center',padding:40}}>No cards for this filter.</p></div>;
+  const card=cards[idx],cat=CATEGORIES[card.cat];
+  return <div className="fade-in">{!forcedCards&&<SubtopicPicker active={cf} setActive={setCf} topicFilter={topicFilter}/>}<SplitProgress correct={sc.c} wrong={sc.w} total={total}/><div className="flashcard" onClick={flip} style={{borderColor:fl?cat?.color+'44':'var(--bg4)'}}><span className="label" style={{color:cat?.color}}>{cat?.label}</span><span className="counter">{idx+1}/{total}</span>{!fl?<div className="question">{card.q}</div>:<div className="answer">{card.a}</div>}{!fl&&<span className="flip-hint">tap or Space to flip</span>}<SrsTimer catId={card.cat}/></div>{fl&&<div style={{display:'flex',gap:10,justifyContent:'center',marginTop:16}}><button className="btn btn-wrong" onClick={()=>mark(false)}>✕ Didn't Know (1)</button><button className="btn btn-correct" onClick={()=>mark(true)}>✓ Knew It (2)</button></div>}</div>
+}
+
+// ─── MASTERY ───
+function MasteryMode({items,topicFilter}){
+  const stats=useStats();const [cf,setCf]=useState(null);
+  const pool=useMemo(()=>{let p=items;if(cf)p=p.filter(c=>c.cat===cf);else if(topicFilter)p=p.filter(c=>CATEGORIES[c.cat]?.topic===topicFilter);return[...p].sort(()=>Math.random()-.5).slice(0,10)},[topicFilter,cf]);
+  const [idx,setIdx]=useState(0);const [fl,setFl]=useState(false);const [rn,setRn]=useState(1);
+  const [done,setDone]=useState(false);const [wrong,setWrong]=useState([]);const [rc,setRc]=useState(0);const [rw,setRw]=useState(0);
+  const total=pool.length;const cur=rn===1?pool:wrong;
+  useEffect(()=>{setIdx(0);setFl(false);setRn(1);setDone(false);setWrong([]);setRc(0);setRw(0)},[cf]);
+  const flip=useCallback(()=>{if(!fl){setFl(true);SFX.flip()}},[fl]);
+  const mark=useCallback((ok)=>{
+    if(ok){SFX.correct();setRc(c=>c+1)}else{SFX.wrong();setRw(c=>c+1);if(rn===1)setWrong(p=>[...p,cur[idx]])}
+    if(idx+1>=cur.length){
+      if(rn===1&&wrong.length+(ok?0:1)>0){if(!ok)setWrong(p=>[...p,cur[idx]]);setRn(2);setIdx(0);setFl(false);setRc(0);setRw(0)}
+      else if(rn>=2){const nw=ok?wrong.filter((_,i)=>i!==idx):wrong;
+        if(nw.length===0||(ok&&wrong.length<=1)){SFX.complete();stats.record(pool[0]?.cat||'mixed','Mastery',total,total,'Mastery');const mc=cf||pool[0]?.cat;if(mc)stats.updateSubtopicSrs(mc,total,total);setDone(true)}
+        else{setWrong(nw.sort(()=>Math.random()-.5));setIdx(0);setFl(false);setRn(r=>r+1);setRc(0);setRw(0)}}
+      else{SFX.complete();stats.record(pool[0]?.cat||'mixed','Mastery',total,total,'Mastery');setDone(true)}
+    }else{setIdx(idx+1);setFl(false)}
+  },[idx,rn,wrong,cur,total]);
+  useEffect(()=>{const h=e=>{if(e.code==='Space'){e.preventDefault();flip()}else if(e.key==='1'||e.code==='ArrowLeft')mark(false);else if(e.key==='2'||e.code==='ArrowRight')mark(true)};window.addEventListener('keydown',h);return()=>window.removeEventListener('keydown',h)},[flip,mark]);
+
+  if(done)return <div className="results-overlay slide-up"><div style={{fontSize:'3rem'}}>🏆</div><div className="score" style={{color:'var(--green)'}}>Mastered!</div><div className="msg">All {total} cards in {rn} round{rn>1?'s':''}.</div><button className="btn btn-primary" onClick={()=>{setIdx(0);setFl(false);setRn(1);setDone(false);setWrong([]);setRc(0);setRw(0)}}>New Set</button></div>;
+  if(!cur.length)return <div className="fade-in"><SubtopicPicker active={cf} setActive={setCf} topicFilter={topicFilter}/><p style={{color:'var(--text3)',textAlign:'center',padding:40}}>No cards.</p></div>;
+  const card=cur[idx],cat=CATEGORIES[card?.cat];
+  return <div className="fade-in"><SubtopicPicker active={cf} setActive={setCf} topicFilter={topicFilter}/><div style={{display:'flex',justifyContent:'space-between',marginBottom:8,fontSize:'.8rem',color:'var(--text3)'}}><span>Round {rn}{rn>1?` (${cur.length} left)`:''}</span><span>{idx+1}/{cur.length}</span></div><SplitProgress correct={rc} wrong={rw} total={cur.length}/><div className="flashcard" onClick={flip}><span className="label" style={{color:cat?.color}}>{cat?.label}</span>{!fl?<div className="question">{card.q}</div>:<div className="answer">{card.a}</div>}{!fl&&<span className="flip-hint">tap or Space to flip</span>}<SrsTimer catId={card.cat}/></div>{fl&&<div style={{display:'flex',gap:10,justifyContent:'center',marginTop:16}}><button className="btn btn-wrong" onClick={()=>mark(false)}>✕ Still Learning</button><button className="btn btn-correct" onClick={()=>mark(true)}>✓ Got It</button></div>}</div>
+}
+
+// ─── TYPE IT ───
+function TypeItMode({items,topicFilter}){
+  const stats=useStats();const [cf,setCf]=useState(null);
+  const pool=useMemo(()=>{let p=items;if(cf)p=p.filter(c=>c.cat===cf);else if(topicFilter)p=p.filter(c=>CATEGORIES[c.cat]?.topic===topicFilter);return[...p].sort(()=>Math.random()-.5).slice(0,8)},[topicFilter,cf]);
+  const [idx,setIdx]=useState(0);const [input,setInput]=useState('');const [st,setSt]=useState('typing');
+  const [sc,setSc]=useState(0);const [sw,setSw]=useState(0);const [res,setRes]=useState(null);const iRef=useRef();const total=pool.length;
+  useEffect(()=>{setIdx(0);setInput('');setSt('typing');setSc(0);setSw(0);setRes(null)},[cf]);
+  const check=()=>{if(st!=='typing'||!input.trim())return;const kw=pool[idx].a.toLowerCase().split(/\s+/).filter(w=>w.length>=4).map(w=>w.replace(/[.,;:!?()]/g,''));const ui=input.toLowerCase().trim();const ok=kw.filter(w=>ui.includes(w)).length/Math.max(kw.length,1)>.25||ui.length>30;if(ok){setSt('correct');SFX.correct();setSc(s=>s+1)}else{setSt('wrong');SFX.wrong();setSw(s=>s+1)}};
+  const next=()=>{if(idx+1>=total){SFX.complete();stats.record(pool[idx].cat,'TypeIt',sc,total,'TypeIt');const mc=cf||pool[0]?.cat;if(mc)stats.updateSubtopicSrs(mc,sc,total);setRes({score:sc,wrong:sw,total})}else{setIdx(idx+1);setInput('');setSt('typing');setTimeout(()=>iRef.current?.focus(),50)}};
+  useEffect(()=>{setTimeout(()=>iRef.current?.focus(),100)},[]);
+  if(res)return <div className="results-overlay slide-up"><div style={{fontSize:'3rem'}}>✍️</div><div className="score" style={{color:res.score/res.total>.6?'var(--green)':'var(--accent2)'}}>{res.score}/{res.total}</div><SplitProgress correct={res.score} wrong={res.wrong} total={res.total}/><div className="msg">Typing reinforces memory.</div><button className="btn btn-primary" onClick={()=>{setIdx(0);setInput('');setSt('typing');setSc(0);setSw(0);setRes(null)}}>Again</button></div>;
+  if(!pool.length)return <div className="fade-in"><SubtopicPicker active={cf} setActive={setCf} topicFilter={topicFilter}/><p style={{color:'var(--text3)',textAlign:'center',padding:40}}>No cards.</p></div>;
+  const card=pool[idx],cat=CATEGORIES[card.cat];
+  return <div className="fade-in"><SubtopicPicker active={cf} setActive={setCf} topicFilter={topicFilter}/><SplitProgress correct={sc} wrong={sw} total={total}/><div className="card" style={{borderLeft:`3px solid ${cat?.color}`}}><div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}><span className="card-tag" style={{background:cat?.color+'22',color:cat?.color}}>{cat?.label}</span><SrsTimer catId={card.cat}/></div><div className="card-title" style={{marginBottom:16}}>{card.q}</div><input ref={iRef} className={`type-input ${st==='correct'?'correct':st==='wrong'?'wrong':''}`} placeholder="Type key points..." value={input} onChange={e=>setInput(e.target.value)} onKeyDown={e=>{if(e.key==='Enter'){if(st==='typing')check();else next()}}} disabled={st!=='typing'}/>{st==='typing'&&<button className="btn btn-primary" style={{marginTop:12}} onClick={check}>Check ↵</button>}{st!=='typing'&&<div style={{marginTop:12}}><div style={{padding:12,background:st==='correct'?'var(--green-dim)':'var(--red-dim)',borderRadius:'var(--radius)',marginBottom:10}}><div style={{fontSize:'.78rem',fontWeight:600,color:st==='correct'?'var(--green)':'var(--red)',marginBottom:4}}>{st==='correct'?'✓ Good!':'✕ Review:'}</div><div style={{fontSize:'.85rem',color:'var(--text2)',lineHeight:1.5}}>{card.a}</div></div><button className="btn btn-primary" onClick={next}>{idx+1>=total?'Results':'Next →'}</button></div>}</div></div>
+}
+
+// ─── STORY MODE ───
+function StoryMode({topicFilter}){
+  const [activeCat,setActiveCat]=useState(null);
+  const [readCats,setReadCats]=useState(()=>{try{return JSON.parse(localStorage.getItem('ib_story_read')||'[]')}catch(e){return[]}});
+  const cats=Object.entries(CATEGORIES).filter(([,v])=>!topicFilter||v.topic===topicFilter);
+  const markRead=(k)=>{const nr=[...new Set([...readCats,k])];setReadCats(nr);try{localStorage.setItem('ib_story_read',JSON.stringify(nr))}catch(e){}};
+  const story=activeCat?STORIES[activeCat]:null;
+  const cat=activeCat?CATEGORIES[activeCat]:null;
+  const topic=cat?TOPICS[cat.topic]:null;
+
+  if(!activeCat){
+    return(<div className="fade-in">
+      <div style={{textAlign:'center',marginBottom:20}}>
+        <div style={{fontSize:'2rem',marginBottom:6}}>📖</div>
+        <h2 style={{fontFamily:'var(--font-display)',fontSize:'1.3rem',color:'var(--accent2)',marginBottom:4}}>Story Mode</h2>
+        <p style={{color:'var(--text3)',fontSize:'.85rem',maxWidth:500,margin:'0 auto'}}>Read the narrative before drilling flashcards. Building the story in your head is key to remembering historical events.</p>
+      </div>
+      {Object.entries(TOPICS).filter(([k])=>!topicFilter||k===topicFilter).map(([tk,tv])=>{
+        const topicCats=cats.filter(([,v])=>v.topic===tk);
+        const readCount=topicCats.filter(([k])=>readCats.includes(k)).length;
+        return(<div key={tk} style={{marginBottom:20}}>
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:8}}>
+            <h3 style={{fontFamily:'var(--font-display)',fontSize:'1.05rem'}}>{tv.icon} {tv.label}</h3>
+            <span style={{fontSize:'.72rem',color:readCount===topicCats.length?'var(--green)':'var(--text3)',fontFamily:'var(--font-mono)'}}>{readCount}/{topicCats.length} read</span>
+          </div>
+          {topicCats.map(([k,v])=>{
+            const s=STORIES[k];const isRead=readCats.includes(k);
+            return(<div key={k} className="card" onClick={()=>setActiveCat(k)} style={{cursor:'pointer',borderLeft:`3px solid ${v.color}`,background:isRead?'var(--bg2)':'linear-gradient(135deg,var(--bg2),#1a1f2b)'}}>
+              <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                <div>
+                  <div style={{fontFamily:'var(--font-display)',fontSize:'1rem',fontWeight:600,marginBottom:2}}>{s?.title||v.label}</div>
+                  <div style={{fontSize:'.78rem',color:'var(--text3)'}}>{s?.events?.length||0} sections · ~{Math.ceil((s?.events||[]).reduce((a,e)=>a+e.text.length,0)/1000)} min read</div>
+                </div>
+                <div style={{display:'flex',alignItems:'center',gap:8}}>
+                  {isRead&&<span style={{fontSize:'.7rem',padding:'2px 8px',borderRadius:99,background:'var(--green-dim)',color:'var(--green)',fontWeight:600}}>READ</span>}
+                  <span style={{color:'var(--text3)',fontSize:'1.1rem'}}>→</span>
+                </div>
+              </div>
+            </div>)
+          })}
+        </div>)
+      })}
+    </div>)
+  }
+
+  // ─── Reading view ───
+  return(<div className="fade-in story-wrap">
+    <button className="btn btn-ghost btn-sm" onClick={()=>setActiveCat(null)} style={{marginBottom:16}}>← All Stories</button>
+    <span className="story-topic-tag" style={{background:topic?.color+'22',color:topic?.color,marginLeft:8}}>{topic?.label}</span>
+    <div className="story-title">{story?.title||cat?.label}</div>
+    <div style={{fontSize:'.82rem',color:'var(--text3)',marginBottom:24}}>{story?.events?.length} sections · {CARDS.filter(c=>c.cat===activeCat).length} flashcards on this topic</div>
+
+    <div className="timeline">
+      {story?.events?.map((e,i)=>(
+        <div key={i} className="tl-event">
+          <div className="tl-dot" style={{borderColor:cat?.color}}/>
+          <div className="tl-year">{e.year}</div>
+          <div className="tl-text">{e.text}</div>
+        </div>
+      ))}
+    </div>
+
+    <div style={{marginTop:32,padding:20,background:'var(--bg2)',borderRadius:'var(--radius-lg)',border:'1px solid var(--bg4)',textAlign:'center'}}>
+      <div style={{fontSize:'.85rem',color:'var(--text2)',marginBottom:12}}>Finished reading? Now test yourself.</div>
+      <div style={{display:'flex',gap:8,justifyContent:'center',flexWrap:'wrap'}}>
+        <button className="btn btn-primary" onClick={()=>{markRead(activeCat);setActiveCat(null)}}>✓ Mark as Read</button>
+      </div>
+    </div>
+  </div>)
+}
+
+// ─── MINI RING ───
+function MiniRing({value,size=52,stroke=4,color='var(--accent)'}){
+  const r=(size-stroke)/2,c=2*Math.PI*r,o=c-(value/100)*c;
+  return <svg width={size} height={size} style={{transform:'rotate(-90deg)'}}><circle cx={size/2} cy={size/2} r={r} fill="none" stroke="var(--bg4)" strokeWidth={stroke}/><circle cx={size/2} cy={size/2} r={r} fill="none" stroke={color} strokeWidth={stroke} strokeLinecap="round" strokeDasharray={c} strokeDashoffset={o} style={{transition:'stroke-dashoffset .6s ease'}}/></svg>
+}
+
+// ─── STATS TAB (redesigned) ───
+function StatsTab(){
+  const stats=useStats();const [now,setNow]=useState(Date.now());const [showSch,setShowSch]=useState(false);
+  useEffect(()=>{const i=setInterval(()=>setNow(Date.now()),5000);return()=>clearInterval(i)},[]);
+  const prof=stats.proficiency(),att=stats.getAttempts(),dueCats=stats.getDueCats(),srs=stats.getAllSrs();
+  const circ=2*Math.PI*58,off=circ-(prof/100)*circ;
+  const cd=Object.entries(CATEGORIES).map(([k,v])=>{const p=stats.getSubtopicProf(k),g=stats.getGrade(k),s=stats.getSrs(k),a=stats.getByCat(k);return{key:k,...v,prof:p,grade:g,srs:s,att:a.length,cards:CARDS.filter(c=>c.cat===k).length}});
+  const strong=cd.filter(c=>c.prof>=70).sort((a,b)=>b.prof-a.prof);
+  const weak=cd.filter(c=>c.att>0&&c.prof<60).sort((a,b)=>a.prof-b.prof);
+  const fresh=cd.filter(c=>c.att===0);
+
+  return <div className="fade-in">
+    {/* Overall */}
+    <div style={{textAlign:'center',marginBottom:28,padding:'24px 0 16px',background:'linear-gradient(180deg,var(--bg2) 0%,transparent 100%)',borderRadius:'var(--radius-lg)'}}>
+      <div className="stat-ring"><svg width="140" height="140"><circle cx="70" cy="70" r="58" fill="none" stroke="var(--bg4)" strokeWidth="8"/><circle cx="70" cy="70" r="58" fill="none" stroke={prof>=70?'var(--green)':prof>=40?'var(--accent)':'var(--red)'} strokeWidth="8" strokeLinecap="round" strokeDasharray={circ} strokeDashoffset={off} style={{transition:'stroke-dashoffset 1s ease'}}/></svg><div className="value"><span className="num">{prof}</span><span className="label">Overall</span></div></div>
+      <div style={{display:'flex',justifyContent:'center',gap:28,fontSize:'.82rem'}}>
+        <div><span style={{color:'var(--accent2)',fontWeight:700,fontSize:'1.2rem'}}>{att.length}</span><br/><span style={{color:'var(--text3)',fontSize:'.7rem'}}>Rounds</span></div>
+        <div><span style={{color:'var(--green)',fontWeight:700,fontSize:'1.2rem'}}>{Object.keys(srs).length}/17</span><br/><span style={{color:'var(--text3)',fontSize:'.7rem'}}>Tracked</span></div>
+        <div><span style={{color:dueCats.length?'var(--orange)':'var(--text3)',fontWeight:700,fontSize:'1.2rem'}}>{dueCats.length}</span><br/><span style={{color:'var(--text3)',fontSize:'.7rem'}}>Due Now</span></div>
+      </div>
+    </div>
+
+    {/* Due */}
+    {dueCats.length>0&&<div style={{marginBottom:20}}><h3 style={{fontFamily:'var(--font-display)',fontSize:'1rem',marginBottom:10,color:'var(--orange)'}}>🔥 Due for Review</h3>
+      {dueCats.map(k=>{const cat=CATEGORIES[k],s=srs[k];return <div key={k} style={{display:'flex',alignItems:'center',gap:10,padding:'10px 14px',background:'#1a1510',border:'1px solid #3d2a10',borderRadius:'var(--radius)',marginBottom:6}}>
+        <div style={{width:10,height:10,borderRadius:'50%',background:'var(--orange)',animation:'pulse 2s infinite',flexShrink:0}}/><div style={{flex:1}}><div style={{fontSize:'.85rem',fontWeight:600,color:cat?.color}}>{cat?.label}</div><div style={{fontSize:'.7rem',color:'var(--text3)'}}>streak {s?.streak||0} · level {SRS_LABELS[s?.level||0]}</div></div><span style={{fontSize:'.78rem',fontWeight:700,color:'var(--orange)'}}>DUE</span>
+      </div>})}
+    </div>}
+
+    {/* Topic sections */}
+    {Object.entries(TOPICS).map(([tk,tv])=>{
+      const tc=cd.filter(c=>c.topic===tk),avg=tc.filter(c=>c.att>0).length?Math.round(tc.reduce((s,c)=>s+c.prof,0)/tc.length):0;
+      return <div key={tk} style={{marginBottom:24}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:10}}><h3 style={{fontFamily:'var(--font-display)',fontSize:'1.05rem'}}>{tv.icon} {tv.label}</h3><span style={{fontSize:'.78rem',fontFamily:'var(--font-mono)',color:'var(--text3)'}}>{avg}%</span></div>
+        <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(230px,1fr))',gap:8}}>
+          {tc.map(c=>{const s=c.srs,isDue=s&&s.next<=now,tl=s?s.next-now:0;
+            return <div key={c.key} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 14px',background:isDue?'#1a1510':'var(--bg2)',border:`1px solid ${isDue?'#3d2a10':'var(--bg4)'}`,borderRadius:'var(--radius)'}}>
+              <div style={{position:'relative',width:48,height:48,flexShrink:0}}><MiniRing value={c.prof} size={48} stroke={4} color={c.grade.c}/><div style={{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'.72rem',fontWeight:700,color:c.grade.c}}>{c.grade.g}</div></div>
+              <div style={{flex:1,minWidth:0}}><div style={{fontSize:'.82rem',fontWeight:600,color:c.color,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{c.label}</div><div style={{fontSize:'.68rem',color:'var(--text3)',marginTop:1}}>{c.prof}% · {c.cards} cards · {c.att} rounds{s?isDue?' · DUE':` · ${formatCountdown(tl)}`:' · new'}</div></div>
+            </div>})}
+        </div>
+      </div>})}
+
+    {/* Strengths / Weaknesses */}
+    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:20}}>
+      <div style={{padding:16,background:'var(--green-dim)',border:'1px solid #1a3d28',borderRadius:'var(--radius-lg)'}}>
+        <h4 style={{fontFamily:'var(--font-display)',fontSize:'.95rem',color:'var(--green)',marginBottom:8}}>💪 Strengths</h4>
+        {strong.length?strong.slice(0,4).map(c=><div key={c.key} style={{fontSize:'.78rem',color:'var(--text2)',padding:'3px 0'}}>{c.label} — <span style={{color:'var(--green)',fontWeight:600}}>{c.prof}%</span></div>):<div style={{fontSize:'.78rem',color:'var(--text3)'}}>Practice more</div>}
+      </div>
+      <div style={{padding:16,background:'var(--red-dim)',border:'1px solid #3d1a1a',borderRadius:'var(--radius-lg)'}}>
+        <h4 style={{fontFamily:'var(--font-display)',fontSize:'.95rem',color:'var(--red)',marginBottom:8}}>🎯 Focus On</h4>
+        {weak.length?weak.slice(0,4).map(c=><div key={c.key} style={{fontSize:'.78rem',color:'var(--text2)',padding:'3px 0'}}>{c.label} — <span style={{color:'var(--red)',fontWeight:600}}>{c.prof}%</span></div>):<div style={{fontSize:'.78rem',color:'var(--text3)'}}>No weak areas</div>}
+      </div>
+    </div>
+    {fresh.length>0&&<div style={{padding:14,background:'var(--bg2)',border:'1px solid var(--bg4)',borderRadius:'var(--radius)',marginBottom:20}}><h4 style={{fontFamily:'var(--font-display)',fontSize:'.9rem',color:'var(--text3)',marginBottom:6}}>📭 Not Started ({fresh.length})</h4><div style={{fontSize:'.78rem',color:'var(--text3)',lineHeight:1.8}}>{fresh.map(c=>c.label).join(' · ')}</div></div>}
+
+    {/* SRS schedule */}
+    <button className="btn btn-ghost" style={{width:'100%',justifyContent:'center',marginBottom:16}} onClick={()=>setShowSch(!showSch)}>{showSch?'Hide':'Show'} SRS Schedule</button>
+    {showSch&&<div style={{marginBottom:20}}>{Object.entries(CATEGORIES).map(([k,v])=>{const s=srs[k];if(!s)return null;const isDue=s.next<=now;
+      return <div key={k} className="srs-card-row" style={{background:isDue?'#1a1510':'var(--bg2)',borderColor:isDue?'#3d2a10':'var(--bg4)'}}>
+        <div style={{width:8,height:8,borderRadius:'50%',background:isDue?'var(--orange)':s.streak>=3?'var(--green)':'var(--blue)',flexShrink:0}}/><span className="srs-q" style={{color:v.color}}>{v.label}</span><span className="srs-meta">×{s.streak} lvl {SRS_LABELS[s.level]}</span><span className="srs-status" style={{background:isDue?'#fb923c22':'var(--green-dim)',color:isDue?'var(--orange)':'var(--green)'}}>{isDue?'DUE':formatCountdown(s.next-now)}</span>
+      </div>}).filter(Boolean)}{Object.keys(srs).length===0&&<p style={{color:'var(--text3)',fontSize:'.82rem',textAlign:'center',padding:20}}>Practice to start tracking</p>}</div>}
+
+    {/* Mode performance */}
+    <h3 style={{fontFamily:'var(--font-display)',fontSize:'1rem',margin:'16px 0 10px'}}>By Mode</h3>
+    {['Recall','Mastery','TypeIt'].map(m=>{const a=stats.getByMode(m);const avg=a.length?Math.round(a.reduce((s,x)=>s+x.score/x.total,0)/a.length*100):0;
+      return <div key={m} style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}><div style={{width:70,fontSize:'.82rem',color:'var(--text2)'}}>{m}</div><div style={{flex:1,height:6,background:'var(--bg4)',borderRadius:3,overflow:'hidden'}}><div style={{height:'100%',width:`${avg}%`,background:avg>=70?'var(--green)':avg>=40?'var(--accent)':'var(--red)',borderRadius:3,transition:'width .5s'}}/></div><div style={{width:55,textAlign:'right',fontSize:'.78rem',fontFamily:'var(--font-mono)',color:a.length?'var(--text)':'var(--text3)'}}>{avg}% ({a.length})</div></div>})}
+
+    <div style={{marginTop:24,display:'flex',gap:10}}><button className="btn btn-ghost btn-sm" onClick={()=>{if(confirm('Reset all progress?')){stats.reset();location.reload()}}}>Reset Progress</button></div>
+    <ImportExport/>
+  </div>
+}
+function ImportExport(){
+  const stats=useStats();
+  const [showImport,setShowImport]=useState(false);
+  const [showSetup,setShowSetup]=useState(false);
+  const [importText,setImportText]=useState('');
+  const [importResult,setImportResult]=useState(null);
+  const [syncUrl,setSyncUrl]=useState(CloudSync.getUrl());
+  const [syncStatus,setSyncStatus]=useState(null);
+  const [syncing,setSyncing]=useState(false);
+  const fileInputRef=useRef();
+
+  // Auto-pull on mount if cloud is configured
+  useEffect(()=>{
+    if(CloudSync.isConfigured()){
+      setSyncing(true);
+      stats.pullFromCloud().then(r=>{setSyncStatus(r);setSyncing(false);if(r.replaced)setTimeout(()=>location.reload(),1000)});
+    }
+  },[]);
+
+  const handleExport=()=>{
+    const json=stats.exportData();
+    const blob=new Blob([json],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;
+    const d=new Date();
+    a.download=`ib-history-save-${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}.json`;
+    document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  };
+
+  const handleCopyExport=()=>{
+    navigator.clipboard.writeText(stats.exportData()).then(()=>alert('Save data copied to clipboard!')).catch(()=>{
+      const ta=document.createElement('textarea');ta.value=stats.exportData();document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);alert('Save data copied!')
+    });
+  };
+
+  const handleImportText=()=>{
+    if(!importText.trim())return;
+    const result=stats.importData(importText);
+    setImportResult(result);
+    if(result.success)setTimeout(()=>location.reload(),1500);
+  };
+
+  const handleImportFile=(e)=>{
+    const file=e.target.files?.[0];if(!file)return;
+    const reader=new FileReader();
+    reader.onload=(ev)=>{
+      const result=stats.importData(ev.target.result);
+      setImportResult(result);
+      if(result.success)setTimeout(()=>location.reload(),1500);
+    };
+    reader.readAsText(file);
+  };
+
+  const handleSaveUrl=()=>{
+    const trimmed=syncUrl.trim();
+    CloudSync.setUrl(trimmed);
+    if(trimmed){setSyncStatus({ok:true,msg:'URL saved! Testing connection...'});setSyncing(true);
+      stats.pullFromCloud().then(r=>{setSyncStatus(r);setSyncing(false);if(r.replaced)setTimeout(()=>location.reload(),1200)})}
+    else setSyncStatus({ok:true,msg:'Cloud sync disabled.'});
+  };
+
+  const handlePush=async()=>{setSyncing(true);const r=await stats.pushToCloud();setSyncStatus(r.ok?{ok:true,msg:'Pushed to cloud!'}:{ok:false,error:r.error});setSyncing(false)};
+  const handlePull=async()=>{setSyncing(true);const r=await stats.pullFromCloud();setSyncStatus(r);setSyncing(false);if(r.replaced)setTimeout(()=>location.reload(),1200)};
+
+  const lastPush=CloudSync.getStatus().lastPush;
+  const timeSince=lastPush?Math.round((Date.now()-lastPush)/60000):null;
+
+  return(<div style={{marginTop:20}}>
+    {/* ═══ CLOUD SYNC ═══ */}
+    <h3 style={{fontFamily:'var(--font-display)',fontSize:'1.1rem',margin:'16px 0 12px'}}>☁️ Cloud Sync (Google Drive)</h3>
+    <div className="card" style={{background:CloudSync.isConfigured()?'linear-gradient(135deg,#121d2e,var(--bg2))':'var(--bg2)'}}>
+      {CloudSync.isConfigured()&&<div style={{display:'flex',alignItems:'center',gap:8,marginBottom:12}}>
+        <div style={{width:8,height:8,borderRadius:'50%',background:syncing?'var(--orange)':'var(--green)',animation:syncing?'pulse 1s infinite':'none'}}/>
+        <span style={{fontSize:'.82rem',color:syncing?'var(--orange)':'var(--green)',fontWeight:600}}>{syncing?'Syncing...':'Connected'}</span>
+        {timeSince!==null&&<span style={{fontSize:'.72rem',color:'var(--text3)',marginLeft:'auto'}}>Last push: {timeSince<1?'just now':timeSince<60?`${timeSince}m ago`:`${Math.round(timeSince/60)}h ago`}</span>}
+      </div>}
+
+      <div style={{display:'flex',gap:6,alignItems:'center',marginBottom:10}}>
+        <input style={{flex:1,padding:'8px 12px',background:'var(--bg3)',border:'1px solid var(--bg4)',borderRadius:'var(--radius)',color:'var(--text)',fontSize:'.82rem',outline:'none',fontFamily:'var(--font-mono)'}}
+          placeholder="Paste your Apps Script URL here..." value={syncUrl} onChange={e=>setSyncUrl(e.target.value)}/>
+        <button className="btn btn-primary btn-sm" onClick={handleSaveUrl} style={{flexShrink:0}}>{CloudSync.isConfigured()?'Update':'Connect'}</button>
+      </div>
+
+      {CloudSync.isConfigured()&&<div style={{display:'flex',gap:6,flexWrap:'wrap',marginBottom:10}}>
+        <button className="btn btn-ghost btn-sm" onClick={handlePush} disabled={syncing}>⬆ Push to Cloud</button>
+        <button className="btn btn-ghost btn-sm" onClick={handlePull} disabled={syncing}>⬇ Pull from Cloud</button>
+      </div>}
+
+      {syncStatus&&<div style={{padding:8,borderRadius:'var(--radius)',background:syncStatus.ok?'var(--green-dim)':'var(--red-dim)',fontSize:'.8rem',marginBottom:8}}>
+        <span style={{color:syncStatus.ok?'var(--green)':'var(--red)'}}>{syncStatus.ok?'✓ ':'✕ '}{syncStatus.msg||syncStatus.error}</span>
+      </div>}
+
+      <button style={{fontSize:'.75rem',color:'var(--text3)',textDecoration:'underline',background:'none',border:'none',cursor:'pointer',padding:0}} onClick={()=>setShowSetup(!showSetup)}>
+        {showSetup?'Hide setup instructions':'How to set up cloud sync (2 minutes)'}
+      </button>
+
+      {showSetup&&<div style={{marginTop:12,padding:14,background:'var(--bg3)',borderRadius:'var(--radius)',fontSize:'.82rem',color:'var(--text2)',lineHeight:1.7}}>
+        <div style={{fontWeight:700,color:'var(--accent2)',marginBottom:8}}>One-time setup:</div>
+        <div style={{marginBottom:6}}><strong style={{color:'var(--text)'}}>Step 1:</strong> Go to <a href="https://script.google.com" target="_blank" rel="noopener" style={{color:'var(--blue)'}}>script.google.com</a> and click <strong>New project</strong></div>
+        <div style={{marginBottom:6}}><strong style={{color:'var(--text)'}}>Step 2:</strong> Delete the default code and paste this entire script:</div>
+        <div style={{background:'var(--bg)',padding:10,borderRadius:6,fontFamily:'var(--font-mono)',fontSize:'.72rem',marginBottom:8,overflowX:'auto',whiteSpace:'pre',lineHeight:1.5,border:'1px solid var(--bg4)'}}>
+{`function doGet(e) {
+  if (e && e.parameter && e.parameter.action === 'load') {
+    var files = DriveApp.getFilesByName('ib-history-sl-save.json');
+    if (files.hasNext()) {
+      var content = files.next().getBlob().getDataAsString();
+      return ContentService.createTextOutput(content)
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    return ContentService.createTextOutput('{}')
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+  return ContentService.createTextOutput('{"status":"ok"}')
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+function doPost(e) {
+  try {
+    var body = JSON.parse(e.postData.contents);
+    var data = JSON.stringify(body.data);
+    var files = DriveApp.getFilesByName('ib-history-sl-save.json');
+    if (files.hasNext()) {
+      files.next().setContent(data);
+    } else {
+      DriveApp.createFile('ib-history-sl-save.json', data,
+        'application/json');
+    }
+    return ContentService.createTextOutput(
+      JSON.stringify({success: true}))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch(err) {
+    return ContentService.createTextOutput(
+      JSON.stringify({success: false, error: err.toString()}))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}`}
+        </div>
+        <div style={{marginBottom:6}}><strong style={{color:'var(--text)'}}>Step 3:</strong> Click <strong>Deploy → New deployment</strong></div>
+        <div style={{marginBottom:6}}><strong style={{color:'var(--text)'}}>Step 4:</strong> Type: <strong>Web app</strong>. Execute as: <strong>Me</strong>. Who has access: <strong>Anyone</strong></div>
+        <div style={{marginBottom:6}}><strong style={{color:'var(--text)'}}>Step 5:</strong> Click <strong>Deploy</strong>, authorize with your Google account when prompted</div>
+        <div style={{marginBottom:8}}><strong style={{color:'var(--text)'}}>Step 6:</strong> Copy the <strong>Web app URL</strong> and paste it above</div>
+        <div style={{padding:8,background:'var(--accent-dim)',borderRadius:6,fontSize:'.78rem'}}>
+          <strong style={{color:'var(--accent2)'}}>That's it!</strong> Your progress will now auto-sync to a JSON file in your Google Drive. Open this tool on any device, paste the same URL, and pull your data.
+        </div>
+      </div>}
+    </div>
+
+    {/* ═══ LOCAL IMPORT/EXPORT ═══ */}
+    <h3 style={{fontFamily:'var(--font-display)',fontSize:'1.1rem',margin:'20px 0 12px'}}>💾 Local Save Data</h3>
+
+    <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:16}}>
+      <button className="btn btn-primary btn-sm" onClick={handleExport}>📥 Export as File</button>
+      <button className="btn btn-ghost btn-sm" onClick={handleCopyExport}>📋 Copy to Clipboard</button>
+      <button className="btn btn-ghost btn-sm" onClick={()=>setShowImport(!showImport)}>📤 {showImport?'Hide':'Show'} Import</button>
+    </div>
+
+    {showImport&&<div className="card" style={{background:'var(--bg3)'}}>
+      <div style={{fontSize:'.85rem',color:'var(--text2)',marginBottom:12}}>Import from a file or paste JSON below. This will <strong style={{color:'var(--red)'}}>replace</strong> all current progress.</div>
+
+      <div style={{display:'flex',gap:8,marginBottom:12}}>
+        <button className="btn btn-ghost btn-sm" onClick={()=>fileInputRef.current?.click()}>📁 Choose File</button>
+        <input ref={fileInputRef} type="file" accept=".json" style={{display:'none'}} onChange={handleImportFile}/>
+      </div>
+
+      <div style={{fontSize:'.78rem',color:'var(--text3)',marginBottom:6}}>Or paste JSON:</div>
+      <textarea style={{width:'100%',minHeight:100,background:'var(--bg2)',border:'1px solid var(--bg4)',borderRadius:'var(--radius)',padding:10,color:'var(--text)',fontFamily:'var(--font-mono)',fontSize:'.78rem',resize:'vertical',outline:'none'}}
+        placeholder='{"attempts":[...],"srs":{...},...}' value={importText} onChange={e=>setImportText(e.target.value)}/>
+      <button className="btn btn-primary btn-sm" style={{marginTop:8}} onClick={handleImportText} disabled={!importText.trim()}>Import Data</button>
+
+      {importResult&&<div style={{marginTop:10,padding:10,borderRadius:'var(--radius)',background:importResult.success?'var(--green-dim)':'var(--red-dim)',fontSize:'.82rem'}}>
+        {importResult.success
+          ?<span style={{color:'var(--green)'}}>✓ Imported! {importResult.cards} SRS cards, {importResult.attempts} practice rounds. Reloading...</span>
+          :<span style={{color:'var(--red)'}}>✕ Import failed: {importResult.error}</span>}
+      </div>}
+    </div>}
+  </div>)
+}
+
+// ─── EXAM CRITERIA ───
+function ExamCriteria(){
+  return(<div className="criteria-section fade-in">
+    <div className="criteria-card">
+      <h3>📄 Paper 1 — Source-based Paper</h3>
+      <p><strong>Duration:</strong> 1 hour &nbsp;|&nbsp; <strong>Weighting:</strong> 30% of final grade &nbsp;|&nbsp; <strong>Max marks:</strong> 24</p>
+      <h4>Structure</h4>
+      <p>Based on a prescribed subject with 4–5 written sources (primary and secondary). You answer 4 compulsory questions of increasing difficulty.</p>
+      <ul>
+        <li><strong>Q1 (3 marks):</strong> Comprehension — identify information from one source</li>
+        <li><strong>Q2 (4 marks):</strong> Comprehension — identify information from two sources</li>
+        <li><strong>Q3 (6 marks):</strong> Cross-referencing — compare and contrast two sources (values and limitations using origin, purpose, content)</li>
+        <li><strong>Q4 (9 marks):</strong> Mini-essay — evaluate sources AND use own knowledge. "Using the sources and your own knowledge, assess/evaluate/discuss…"</li>
+      </ul>
+      <h4>Key Skills</h4>
+      <ul>
+        <li>OPCVL (Origin, Purpose, Content, Value, Limitation) for source analysis</li>
+        <li>Cross-reference sources with each other and your own knowledge</li>
+        <li>For Q4: integrate source evidence with detailed own knowledge, reach a supported conclusion</li>
+        <li>Time management: spend roughly 5 min on Q1, 5 min on Q2, 15 min on Q3, 25 min on Q4</li>
+      </ul>
+    </div>
+
+    <div className="criteria-card">
+      <h3>📝 Paper 2 — Essay Paper</h3>
+      <p><strong>Duration:</strong> 1 hour 30 minutes &nbsp;|&nbsp; <strong>Weighting:</strong> 45% of final grade &nbsp;|&nbsp; <strong>Max marks:</strong> 30 (15 per essay)</p>
+      <h4>Structure</h4>
+      <p>Choose <strong>2 essay questions</strong> from different topics. Each essay is marked out of 15. For SL: Topics 1–5 from the syllabus. You must answer from TWO different topics.</p>
+      <h4>Marking Bands (per essay, /15)</h4>
+      <div>
+        {[
+          {band:"13–15",color:"var(--green)",desc:"Clearly focused, well-structured analytical response. Detailed, relevant, accurate knowledge. Different perspectives evaluated. Arguments supported by evidence throughout."},
+          {band:"10–12",color:"#86efac",desc:"Mostly focused and analytical. Relevant, detailed knowledge used to support arguments. Some evaluation of different perspectives. Clear structure with mostly supported arguments."},
+          {band:"7–9",color:"var(--accent2)",desc:"Some relevant knowledge but limited analysis. May be partly descriptive/narrative. Arguments only partially developed. Some attempt at structure."},
+          {band:"4–6",color:"var(--orange)",desc:"Limited knowledge and understanding. Mostly descriptive or generalised. Little awareness of the question demands. Weak structure."},
+          {band:"1–3",color:"var(--red)",desc:"Very little relevant knowledge. No analysis. Does not address the question meaningfully."},
+          {band:"0",color:"var(--text3)",desc:"Does not reach a standard described by the descriptors, or is not relevant."}
+        ].map((b,i)=><div key={i} className="band-row" style={{background:b.color+'11'}}>
+          <span className="band-label" style={{color:b.color}}>{b.band}</span>
+          <span className="band-desc">{b.desc}</span>
+        </div>)}
+      </div>
+    </div>
+
+    <div className="criteria-card">
+      <h3>✍️ Essay Writing Tips</h3>
+      <h4>Structure every essay:</h4>
+      <ul>
+        <li><strong>Introduction:</strong> Define key terms, outline your argument, state your thesis (the extent to which you agree/disagree)</li>
+        <li><strong>Body paragraphs (3–4):</strong> One clear argument per paragraph. Use PEE/PEEL: Point → Evidence → Explanation → Link back to question</li>
+        <li><strong>Balance:</strong> Use 3+1 (three for, one against) or 2+2 structure for "to what extent" questions</li>
+        <li><strong>Conclusion:</strong> Weigh arguments, give a clear, supported judgement. Never introduce new evidence</li>
+      </ul>
+      <h4>Command terms to watch:</h4>
+      <ul>
+        <li><strong>"To what extent"</strong> — demands a balanced argument with a clear judgement</li>
+        <li><strong>"Discuss"</strong> — consider different perspectives and reach a conclusion</li>
+        <li><strong>"Evaluate"</strong> — make an appraisal, weighing strengths and limitations</li>
+        <li><strong>"Compare and contrast"</strong> — identify similarities AND differences</li>
+      </ul>
+      <h4>Transition words for high-band essays:</h4>
+      <p style={{lineHeight:1.8}}>
+        <span style={{background:'var(--green-dim)',color:'var(--green)',padding:'2px 8px',borderRadius:4,margin:'2px',display:'inline-block',fontSize:'.8rem'}}>Furthermore</span>
+        <span style={{background:'var(--green-dim)',color:'var(--green)',padding:'2px 8px',borderRadius:4,margin:'2px',display:'inline-block',fontSize:'.8rem'}}>Moreover</span>
+        <span style={{background:'var(--red-dim)',color:'var(--red)',padding:'2px 8px',borderRadius:4,margin:'2px',display:'inline-block',fontSize:'.8rem'}}>However</span>
+        <span style={{background:'var(--red-dim)',color:'var(--red)',padding:'2px 8px',borderRadius:4,margin:'2px',display:'inline-block',fontSize:'.8rem'}}>On the other hand</span>
+        <span style={{background:'var(--red-dim)',color:'var(--red)',padding:'2px 8px',borderRadius:4,margin:'2px',display:'inline-block',fontSize:'.8rem'}}>Conversely</span>
+        <span style={{background:'var(--blue-dim)',color:'var(--blue)',padding:'2px 8px',borderRadius:4,margin:'2px',display:'inline-block',fontSize:'.8rem'}}>In contrast</span>
+        <span style={{background:'var(--blue-dim)',color:'var(--blue)',padding:'2px 8px',borderRadius:4,margin:'2px',display:'inline-block',fontSize:'.8rem'}}>Consequently</span>
+        <span style={{background:'var(--accent-dim)',color:'var(--accent2)',padding:'2px 8px',borderRadius:4,margin:'2px',display:'inline-block',fontSize:'.8rem'}}>To a large extent</span>
+        <span style={{background:'var(--accent-dim)',color:'var(--accent2)',padding:'2px 8px',borderRadius:4,margin:'2px',display:'inline-block',fontSize:'.8rem'}}>Ultimately</span>
+        <span style={{background:'var(--accent-dim)',color:'var(--accent2)',padding:'2px 8px',borderRadius:4,margin:'2px',display:'inline-block',fontSize:'.8rem'}}>It can be argued that</span>
+      </p>
+    </div>
+
+    <div className="criteria-card">
+      <h3>🕐 Internal Assessment (IA)</h3>
+      <p><strong>Weighting:</strong> 25% of final grade &nbsp;|&nbsp; <strong>Word limit:</strong> 2,200 words</p>
+      <p>A historical investigation on a topic of your choice. Marked on: identification and evaluation of sources (6), investigation (15), reflection (4). Total: 25 marks.</p>
+    </div>
+  </div>)
+}
+
+// ─── EXAM TAB ───
+function ExamTab(){
+  const [topicFilter,setTopicFilter]=useState(null);
+  const [mode,setMode]=useState('criteria');
+  const [timerActive,setTimerActive]=useState(false);
+  const [timeLeft,setTimeLeft]=useState(45*60);
+  const [answers,setAnswers]=useState({});
+  const timerRef=useRef();
+
+  const filteredQs=EXAM_QUESTIONS.filter(q=>!topicFilter||q.topic===topicFilter);
+
+  useEffect(()=>{
+    if(timerActive&&timeLeft>0){timerRef.current=setInterval(()=>setTimeLeft(t=>t-1),1000);return()=>clearInterval(timerRef.current)}
+    if(timeLeft<=0)clearInterval(timerRef.current);
+  },[timerActive,timeLeft]);
+
+  const formatTime=s=>{const m=Math.floor(s/60);const sec=s%60;return`${m}:${sec<10?'0':''}${sec}`};
+
+  return(<div className="fade-in">
+    <div className="mode-bar">
+      <button className={`mode-btn ${mode==='criteria'?'active':''}`} onClick={()=>setMode('criteria')}>Exam Criteria</button>
+      <button className={`mode-btn ${mode==='questions'?'active':''}`} onClick={()=>setMode('questions')}>Essay Questions</button>
+      <button className={`mode-btn ${mode==='timed'?'active':''}`} onClick={()=>setMode('timed')}>Timed Practice</button>
+    </div>
+
+    {mode==='criteria'&&<ExamCriteria/>}
+
+    {mode==='timed'&&<div style={{textAlign:'center',marginBottom:20}}>
+      <div className="timer-display" style={{color:timeLeft<60?'var(--red)':timeLeft<300?'var(--orange)':'var(--accent2)'}}>{formatTime(timeLeft)}</div>
+      <div style={{display:'flex',gap:8,justifyContent:'center',flexWrap:'wrap'}}>
+        {[{l:'Paper 1 (1h)',v:60},{l:'Paper 2 (1h30)',v:90},{l:'45 min',v:45},{l:'25 min',v:25}].map(p=>
+          <button key={p.v} className="btn btn-ghost btn-sm" onClick={()=>{setTimeLeft(p.v*60);setTimerActive(false)}}>{p.l}</button>)}
+      </div>
+      <button className="btn btn-primary" style={{marginTop:12}} onClick={()=>setTimerActive(!timerActive)}>{timerActive?'⏸ Pause':'▶ Start'}</button>
+    </div>}
+
+    {(mode==='questions'||mode==='timed')&&<>
+      <TopicFilter active={topicFilter} setActive={setTopicFilter}/>
+      {filteredQs.map((q,i)=>{
+        const topic=TOPICS[q.topic];
+        return(<div key={i} className="exam-q">
+          <span className="card-tag" style={{background:topic?.color+'22',color:topic?.color,marginBottom:10,display:'inline-block'}}>{topic?.label}</span>
+          <div className="q-text">{q.q}</div>
+          <details style={{marginBottom:10}}>
+            <summary style={{fontSize:'.8rem',color:'var(--accent)',cursor:'pointer',marginBottom:6}}>💡 Planning hints</summary>
+            <div style={{fontSize:'.82rem',color:'var(--text2)',lineHeight:1.5,padding:'8px 0'}}>{q.hints}</div>
+          </details>
+          <textarea placeholder="Write your essay plan or response here..." value={answers[i]||''} onChange={e=>setAnswers(p=>({...p,[i]:e.target.value}))}/>
+        </div>)
+      })}
+    </>}
+  </div>)
+}
+
+
+// ─── CONTENT TAB ───
+function ContentTab({topic}){
+  const stats=useStats();const [mode,setMode]=useState('browse');const [srsReview,setSrsReview]=useState(false);
+  const topicCards=topic?CARDS.filter(c=>CATEGORIES[c.cat]?.topic===topic):CARDS;
+  const dueCats=stats.getDueCats().filter(k=>!topic||CATEGORIES[k]?.topic===topic);
+  const dueCards=dueCats.flatMap(cat=>CARDS.filter(c=>c.cat===cat));
+
+  if(srsReview&&dueCards.length>0)return <div>
+    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
+      <h3 style={{fontFamily:'var(--font-display)',fontSize:'1.1rem',color:'var(--orange)'}}>🔁 SRS Review — {dueCats.length} subtopic{dueCats.length>1?'s':''}</h3>
+      <button className="btn btn-ghost btn-sm" onClick={()=>setSrsReview(false)}>← Back</button>
+    </div>
+    <RecallMode items={topicCards} topicFilter={topic} modeName="SRS Review" forcedCards={dueCards} key={'srs-'+dueCards.length}/>
+  </div>;
+
+  return <div>
+    <DueBanner topicFilter={topic} onStart={()=>setSrsReview(true)}/>
+    <div className="mode-bar">
+      {['story','browse','recall','mastery','typeIt'].map(m=><button key={m} className={`mode-btn ${mode===m?'active':''}`} onClick={()=>{setMode(m);setSrsReview(false)}}>
+        {m==='typeIt'?'Type It':m==='story'?'📖 Story':m.charAt(0).toUpperCase()+m.slice(1)}
+      </button>)}
+    </div>
+    {mode==='story'&&<StoryMode topicFilter={topic}/>}
+    {mode==='browse'&&<BrowseMode items={topicCards} topicFilter={topic}/>}
+    {mode==='recall'&&<RecallMode items={topicCards} topicFilter={topic} key={topic+'r'}/>}
+    {mode==='mastery'&&<MasteryMode items={topicCards} topicFilter={topic} key={topic+'m'}/>}
+    {mode==='typeIt'&&<TypeItMode items={topicCards} topicFilter={topic} key={topic+'t'}/>}
+  </div>
+}
+
+// ─── APP ───
+function App(){
+  const [tab,setTab]=useState('all');const [isMobile,setIsMobile]=useState(window.innerWidth<640);
+  const [stats]=useState(()=>createStatsStore());
+  useEffect(()=>{const h=()=>setIsMobile(window.innerWidth<640);window.addEventListener('resize',h);return()=>window.removeEventListener('resize',h)},[]);
+  const tabs=[{id:'all',label:'All Topics',icon:'📚'},{id:'coldWar',label:isMobile?'Cold War':'Cold War',icon:'❄️'},{id:'authStates',label:isMobile?'Auth.':'Authoritarian States',icon:'⚔️'},{id:'reconquest',label:isMobile?'Reconquest':'Reconquest & Conquest',icon:'🌎'},{id:'exam',label:'Exam',icon:'📝'},{id:'stats',label:'Stats',icon:'📊'}];
+  const dueCats=stats.getDueCats();
+  const hasDue=t=>t?dueCats.some(k=>CATEGORIES[k]?.topic===t):dueCats.length>0;
+
+  return <MobileContext.Provider value={isMobile}><StatsContext.Provider value={stats}>
+    {!isMobile&&<div className="header"><h1>IB History SL</h1><p>Final Exam Revision Tool</p></div>}
+    <div className="tab-bar">{tabs.map(t=><button key={t.id} className={`tab-btn ${tab===t.id?'active':''}`} onClick={()=>{setTab(t.id);SFX.tap()}}>
+      {isMobile?t.icon:<>{t.icon} {t.label}</>}
+      <span className={`dot ${(t.id==='all'&&hasDue(null))||(t.id==='coldWar'&&hasDue('coldWar'))||(t.id==='authStates'&&hasDue('authStates'))||(t.id==='reconquest'&&hasDue('reconquest'))?'show':''}`}/>
+    </button>)}</div>
+    <div className="app-wrap">
+      {tab==='all'&&<ContentTab topic={null}/>}
+      {tab==='coldWar'&&<ContentTab topic="coldWar" key="cw"/>}
+      {tab==='authStates'&&<ContentTab topic="authStates" key="as"/>}
+      {tab==='reconquest'&&<ContentTab topic="reconquest" key="rc"/>}
+      {tab==='exam'&&<ExamTab/>}
+      {tab==='stats'&&<StatsTab/>}
+    </div>
+  </StatsContext.Provider></MobileContext.Provider>
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
